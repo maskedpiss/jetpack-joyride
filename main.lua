@@ -1,5 +1,7 @@
 Globals = {}
 
+local world = require("src/objs/gameworld")
+
 function love.load()
   Globals.Screen = {
       x = 0,
@@ -7,6 +9,8 @@ function love.load()
       width = love.graphics.getWidth(),
       height = love.graphics.getHeight()
   }
+  
+  world:load()
 end
 
 
@@ -16,5 +20,5 @@ end
 
 
 function love.draw()
-  
+  world:draw()
 end

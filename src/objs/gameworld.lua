@@ -1,7 +1,11 @@
 local GameWorld = {}
 
 function GameWorld:load()
+  self.BG = {
+      color = {0, 0, 1}
+  }
   
+  self.Ground = {}
 end
 
 
@@ -11,7 +15,7 @@ end
 
 
 function GameWorld:draw()
-  
+  love.graphics.setBackgroundColor(self.BG.color)
 end
 
 return GameWorld
