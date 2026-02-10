@@ -23,6 +23,11 @@ function Player:update(dt)
   end
   
   self.y = self.y + self.yVel * dt
+  
+  if self.y < Globals.Screen.y then
+    self.yVel = 0
+    self.y = Globals.Screen.y
+  end
 end
 
 
