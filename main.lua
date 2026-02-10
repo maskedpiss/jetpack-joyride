@@ -1,6 +1,8 @@
 Globals = {}
 
 local world = require("src/objs/gameworld")
+local Player = require("src/objs/player")
+local player = nil
 
 function love.load()
   Globals.Screen = {
@@ -11,14 +13,16 @@ function love.load()
   }
   
   world:load()
+  player = Player.new(150, Globals.Screen.height / 2)
 end
 
 
 function love.update(dt)
-  
+  player:update(dt)
 end
 
 
 function love.draw()
   world:draw()
+  player:draw()
 end
