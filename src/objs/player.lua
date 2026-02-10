@@ -16,7 +16,12 @@ end
 
 
 function Player:update(dt)
-  self.yVel = self.yVel + self.gravity * dt
+  if love.mouse.isDown(1) then
+    self.yVel = self.yVel - self.gravity * dt
+  else
+    self.yVel = self.yVel + self.gravity * dt
+  end
+  
   self.y = self.y + self.yVel * dt
 end
 
