@@ -1,5 +1,7 @@
 local Bullet = {}
 
+Bullet.cooldownTimer = 0.15
+
 function Bullet.new(x, y)
   local instance = {}
   setmetatable(instance, { __index = Bullet })
@@ -15,8 +17,11 @@ end
 
 
 function Bullet:shoot(x, y)
-  local newBullet = Bullet.new(x, y)
-  table.insert(Globals.Bullets, newBullet)
+  if Bullet.cooldownTimer <= 0 then
+    local newBullet = Bullet.new(x, y)
+    table.insert(Globals.Bullets, newBullet)
+    Bullet.cooldownTimer = 0.15
+  end
 end
 
 
@@ -24,6 +29,8 @@ function Bullet:update(dt)
   for i, bullet in ipairs(Globals.Bullets) do
     bullet.y = bullet.y + bullet.speed * dt
   end
+  
+  Bullet.cooldownTimer = Bullet.cooldownTimer - dt
 end
 
 
