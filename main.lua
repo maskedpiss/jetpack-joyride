@@ -32,6 +32,13 @@ function love.update(dt)
   if love.mouse.isDown(1) then
     Bullet:shoot(player.x + player.width / 2, player.y + player.height)
   end
+  
+  for i, bullet in ipairs(Globals.Bullets) do
+    if Globals.Collisions:AABB(bullet, world.Ground) then
+      bullet.y = world.Ground.y - bullet.height
+      table.remove(Globals.Bullets, i)
+    end
+  end
 end
 
 
