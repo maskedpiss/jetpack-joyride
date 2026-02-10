@@ -21,7 +21,9 @@ end
 
 
 function Bullet:update(dt)
-  
+  for i, bullet in ipairs(Globals.Bullets) do
+    bullet.y = bullet.y + bullet.speed * dt
+  end
 end
 
 

@@ -22,6 +22,7 @@ end
 
 function love.update(dt)
   player:update(dt)
+  Bullet:update(dt)
   
   if Globals.Collisions:AABB(player, world.Ground) then
     player.y = world.Ground.y - player.height
