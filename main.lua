@@ -1,10 +1,12 @@
 Globals = {}
 Globals.Collisions = require("src/utils/collisions")
 Globals.Bullets = {}
+Globals.Score = 000000
 
 local world = require("src/objs/gameworld")
 local Player = require("src/objs/player")
 local Bullet = require("src/objs/bullet")
+local hud = require("src/objs/hud")
 local player = nil
 
 function love.load()
@@ -16,6 +18,7 @@ function love.load()
   }
   
   world:load()
+  hud:load()
   player = Player.new(150, Globals.Screen.height / 2)
 end
 
@@ -44,6 +47,7 @@ end
 
 function love.draw()
   world:draw()
+  hud:draw()
   player:draw()
   Bullet:draw()
 end
