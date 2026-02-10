@@ -1,4 +1,5 @@
 Globals = {}
+Globals.Collisions = require("src/utils/collisions")
 
 local world = require("src/objs/gameworld")
 local Player = require("src/objs/player")
@@ -19,6 +20,11 @@ end
 
 function love.update(dt)
   player:update(dt)
+  
+  if Globals.Collisions:AABB(player, world.Ground) then
+    player.y = world.Ground.y - player.height
+    player.yVel = 0
+  end
 end
 
 
