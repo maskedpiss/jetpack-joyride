@@ -30,7 +30,9 @@ function love.update(dt)
   end
   
   if love.mouse.isDown(1) then
-    Bullet:shoot(player.x + player.width / 2, player.y + player.height)
+    if #Globals.Bullets < 10 then
+      Bullet:shoot(player.x + player.width / 2, player.y + player.height)
+    end
   end
   
   for i, bullet in ipairs(Globals.Bullets) do
