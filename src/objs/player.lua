@@ -8,13 +8,16 @@ function Player.new(x, y)
   instance.y = y
   instance.width = 20
   instance.height = 40
+  instance.gravity = 300
+  instance.yVel = 0
   
   return instance
 end
 
 
 function Player:update(dt)
-  
+  self.yVel = self.yVel + self.gravity * dt
+  self.y = self.y + self.yVel * dt
 end
 
 
