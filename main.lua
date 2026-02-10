@@ -2,6 +2,7 @@ Globals = {}
 Globals.Collisions = require("src/utils/collisions")
 Globals.Bullets = {}
 Globals.Score = 000000
+Globals.Timer = 0
 
 local world = require("src/objs/gameworld")
 local Player = require("src/objs/player")
@@ -24,6 +25,12 @@ end
 
 
 function love.update(dt)
+  Globals.Timer = Globals.Timer + dt
+  if Globals.Timer >= 1 then
+    Globals.Score = Globals.Score + 5
+    Globals.Timer = Globals.Timer - 1
+  end
+  
   player:update(dt)
   Bullet:update(dt)
   
