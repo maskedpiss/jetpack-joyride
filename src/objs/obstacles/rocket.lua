@@ -16,6 +16,7 @@ function Rocket:reset()
   self.width = 100
   self.height = 50
   self.speed = math.random(200, 500)
+  self.health = 3
 end
 
 

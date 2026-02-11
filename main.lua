@@ -72,8 +72,11 @@ function love.update(dt)
     for i, rocket in ipairs(Globals.Rockets) do
       if Globals.Collisions:AABB(bullet, rocket) then
         table.remove(Globals.Bullets, i)
-        table.remove(Globals.Rockets, i)
-        Globals.rocketSpawnTimer = math.random(2, 5)
+        rocket.health = rocket.health - 1
+        if rocket.health <= 0 then
+          table.remove(Globals.Rockets, i)
+          Globals.rocketSpawnTimer = math.random(2, 5)
+        end
       end
     end
   end
