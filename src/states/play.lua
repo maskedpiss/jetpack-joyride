@@ -3,6 +3,7 @@ local Play = {}
 Play.Collisions = require("src/utils/collisions")
 
 local world = nil
+local hud = nil
 local Player = nil
 local player = nil
 local bullet = nil
@@ -10,6 +11,9 @@ local bullet = nil
 function Play.onEnter()
   world = require("src/objs/gameworld")
   world:load()
+  
+  hud = require("src/objs/hud")
+  hud:load()
   
   Player = require("src/objs/player")
   player = Player.new(150, Globals.Screen.height / 2)
@@ -43,6 +47,7 @@ function Play.draw()
   world:draw()
   player:draw()
   bullet:draw()
+  hud:draw()
 end
 
 
