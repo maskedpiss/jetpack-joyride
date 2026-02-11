@@ -1,8 +1,10 @@
 Globals = {}
 Globals.Collisions = require("src/utils/collisions")
 Globals.Bullets = {}
+Globals.Rockets = {}
 Globals.Score = 0
-Globals.Timer = 0
+Globals.scoreTimer = 0
+Globals.rocketSpawnTimer = 0
 
 local world = require("src/objs/gameworld")
 local Player = require("src/objs/player")
@@ -24,20 +26,33 @@ function love.load()
   hud:load()
   player = Player.new(150, Globals.Screen.height / 2)
   
-  rocket = Rocket.new()
+  Globals.rocketSpawnTimer = math.random(2, 5)
 end
 
 
 function love.update(dt)
-  Globals.Timer = Globals.Timer + dt
-  if Globals.Timer >= 1 then
+  Globals.scoreTimer = Globals.scoreTimer + dt
+  if Globals.scoreTimer >= 1 then
     Globals.Score = Globals.Score + 5
-    Globals.Timer = Globals.Timer - 1
+    Globals.scoreTimer = Globals.scoreTimer - 1
+  end
+  
+  Globals.rocketSpawnTimer = Globals.rocketSpawnTimer - dt
+  if Globals.rocketSpawnTimer <= 0 and #Globals.Rockets == 0 then
+    rocket = Rocket.new()
+    table.insert(Globals.Rockets, rocket)
   end
   
   player:update(dt)
   Bullet:update(dt)
-  rocket:update(dt)
+  
+  for i, rocket in ipairs(Globals.Rockets) do
+    rocket:update(dt)
+  end
+  
+  if #Globals.Rockets > 0 then
+    rocket:update(dt)
+  end
   
   if Globals.Collisions:AABB(player, world.Ground) then
     player.y = world.Ground.y - player.height
@@ -62,5 +77,8 @@ function love.draw()
   hud:draw()
   player:draw()
   Bullet:draw()
-  rocket:draw()
+  
+  for i, rocket in ipairs(Globals.Rockets) do
+    rocket:draw()
+  end
 end
