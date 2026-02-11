@@ -61,15 +61,16 @@ function Play.update(dt)
     bullet:shoot(player.x + player.width / 2, player.y + player.height)
   end
   
+  if Play.Collisions:AABB(player, zapper) then
+    Globals.playerHealth = Globals.playerHealth - 1
+    zapper:reset()
+  end
+  
   for i, rocket in ipairs(Globals.Rockets) do
     if Play.Collisions:AABB(rocket, player) then
       Globals.playerHealth = Globals.playerHealth - 1
       player.yVel = 0
       table.remove(Globals.Rockets, i)
-      
-      if Globals.playerHealth <= 0 then
-        GameState:changeState("gameOver")
-      end
     end
   end
   
@@ -89,6 +90,10 @@ function Play.update(dt)
         end
       end
     end
+  end
+  
+  if Globals.playerHealth <= 0 then
+    GameState:changeState("gameOver")
   end
 end
 
