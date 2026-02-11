@@ -4,18 +4,27 @@ function Zapper.new()
   local instance = {}
   setmetatable(instance, { __index = Zapper })
   
-  instance.x = Globals.Screen.width / 2
-  instance.y = Globals.Screen.height / 2
-  instance.width = 200
-  instance.height = 50
-  instance.speed = 200
+  instance:reset()
   
   return instance
 end
 
 
+function Zapper:reset()
+  self.x = Globals.Screen.width
+  self.y = math.random(50, (Globals.Screen.height - 150))
+  self.width = 200
+  self.height = 25
+  self.speed = 200
+end
+
+
 function Zapper:update(dt)
   self.x = self.x - self.speed * dt
+  
+  if self.x + self.width < Globals.Screen.x then
+    self:reset()
+  end
 end
 
 
