@@ -4,6 +4,7 @@ local titleFont = love.graphics.newFont(128)
 
 local Buttons = nil
 local playButton = nil
+local exitButton = nil
 
 function Menu.onEnter()
   Menu.Title = {
@@ -14,6 +15,7 @@ function Menu.onEnter()
   
   Buttons = require("src/objs/button")
   playButton = Buttons.new("Play", Globals.Screen.width / 2, Globals.Screen.height / 2)
+  exitButton = Buttons.new("Exit", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100)
 end
 
 
@@ -28,6 +30,7 @@ function Menu.draw()
   love.graphics.printf(Menu.Title.text, Menu.Title.x, Menu.Title.y, Globals.Screen.width, "center")
   
   playButton:draw()
+  exitButton:draw()
 end
 
 
