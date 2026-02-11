@@ -60,6 +60,10 @@ function Play.update(dt)
       Globals.playerHealth = Globals.playerHealth - 1
       player.yVel = 0
       table.remove(Globals.Rockets, i)
+      
+      if Globals.playerHealth <= 0 then
+        GameState:changeState("gameOver")
+      end
     end
   end
   
