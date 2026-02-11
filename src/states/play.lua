@@ -46,6 +46,7 @@ function Play.update(dt)
   
   player:update(dt)
   bullet:update(dt)
+  zapper:update(dt)
   
   for i, rocket in ipairs(Globals.Rockets) do
     rocket:update(dt)

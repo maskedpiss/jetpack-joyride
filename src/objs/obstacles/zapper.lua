@@ -8,13 +8,14 @@ function Zapper.new()
   instance.y = Globals.Screen.height / 2
   instance.width = 200
   instance.height = 50
+  instance.speed = 200
   
   return instance
 end
 
 
 function Zapper:update(dt)
-  
+  self.x = self.x - self.speed * dt
 end
 
 
