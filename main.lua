@@ -68,6 +68,13 @@ function love.update(dt)
       bullet.y = world.Ground.y - bullet.height
       table.remove(Globals.Bullets, i)
     end
+    
+    for i, rocket in ipairs(Globals.Rockets) do
+      if Globals.Collisions:AABB(bullet, rocket) then
+        table.remove(Globals.Bullets, i)
+        table.remove(Globals.Rockets, i)
+      end
+    end
   end
 end
 
