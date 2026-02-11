@@ -25,6 +25,8 @@ function GameState:changeState(newState)
     GameState.loaded_states[newState] = require(path)
   end
   
+  GameState.current = GameState.loaded_states[newState]
+  
   if GameState.current and GameState.current.onEnter then
     GameState.current.onEnter()
   end
