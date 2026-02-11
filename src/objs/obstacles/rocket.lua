@@ -20,7 +20,7 @@ end
 
 
 function Rocket:update(dt)
-  
+  self.x = self.x - self.speed * dt
 end
 
 
