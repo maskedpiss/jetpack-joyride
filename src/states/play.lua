@@ -100,7 +100,14 @@ end
 
 
 function Play.onExit()
-  
+  Globals.Bullets = {}
+  Globals.Rockets = {}
+  world = nil
+  hud = nil
+  Player = nil
+  player = nil
+  bullet = nil
+  rocket = nil
 end
 
 return Play
