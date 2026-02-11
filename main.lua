@@ -6,13 +6,30 @@ Globals.Score = 0
 Globals.scoreTimer = 0
 Globals.rocketSpawnTimer = 0
 
-local world = require("src/objs/gameworld")
-local Player = require("src/objs/player")
-local Bullet = require("src/objs/bullet")
-local hud = require("src/objs/hud")
-local Rocket = require("src/objs/obstacles/rocket")
-local player = nil
-local rocket = nil
+GameState = {
+    current = nil,
+    state_paths = {
+        menu = "src/states/menu"
+    },
+    loaded_states = {}
+}
+
+
+function GameState:changeState(newState)
+  if GameState.current and GameState.current.onExit then
+    GameState.current.onExit()
+  end
+  
+  if not GameState.loaded_states[newState] then
+    local path = GameState.state_paths[newState]
+    GameState.loaded_states[newState] = require(path)
+  end
+  
+  if GameState.current and GameState.current.onEnter then
+    GameState.current.onEnter()
+  end
+end
+
 
 function love.load()
   Globals.Screen = {
@@ -22,74 +39,19 @@ function love.load()
       height = love.graphics.getHeight()
   }
   
-  world:load()
-  hud:load()
-  player = Player.new(150, Globals.Screen.height / 2)
-  
-  Globals.rocketSpawnTimer = math.random(2, 5)
+  GameState:changeState("menu")
 end
 
 
 function love.update(dt)
-  Globals.scoreTimer = Globals.scoreTimer + dt
-  if Globals.scoreTimer >= 1 then
-    Globals.Score = Globals.Score + 5
-    Globals.scoreTimer = Globals.scoreTimer - 1
-  end
-  
-  Globals.rocketSpawnTimer = Globals.rocketSpawnTimer - dt
-  if Globals.rocketSpawnTimer <= 0 and #Globals.Rockets == 0 then
-    rocket = Rocket.new()
-    table.insert(Globals.Rockets, rocket)
-  end
-  
-  player:update(dt)
-  Bullet:update(dt)
-  
-  for i, rocket in ipairs(Globals.Rockets) do
-    rocket:update(dt)
-  end
-  
-  if #Globals.Rockets > 0 then
-    rocket:update(dt)
-  end
-  
-  if Globals.Collisions:AABB(player, world.Ground) then
-    player.y = world.Ground.y - player.height
-    player.yVel = 0
-  end
-  
-  if love.mouse.isDown(1) then
-    Bullet:shoot(player.x + player.width / 2, player.y + player.height)
-  end
-  
-  for i, bullet in ipairs(Globals.Bullets) do
-    if Globals.Collisions:AABB(bullet, world.Ground) then
-      bullet.y = world.Ground.y - bullet.height
-      table.remove(Globals.Bullets, i)
-    end
-    
-    for i, rocket in ipairs(Globals.Rockets) do
-      if Globals.Collisions:AABB(bullet, rocket) then
-        table.remove(Globals.Bullets, i)
-        rocket.health = rocket.health - 1
-        if rocket.health <= 0 then
-          table.remove(Globals.Rockets, i)
-          Globals.rocketSpawnTimer = math.random(2, 5)
-        end
-      end
-    end
+  if GameState.current and GameState.current.update then
+    GameState.current.update(dt)
   end
 end
 
 
 function love.draw()
-  world:draw()
-  hud:draw()
-  player:draw()
-  Bullet:draw()
-  
-  for i, rocket in ipairs(Globals.Rockets) do
-    rocket:draw()
+  if GameState.current and GameState.current.draw then
+    GameState.current.draw()
   end
 end
