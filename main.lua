@@ -8,7 +8,9 @@ local world = require("src/objs/gameworld")
 local Player = require("src/objs/player")
 local Bullet = require("src/objs/bullet")
 local hud = require("src/objs/hud")
+local Rocket = require("src/objs/obstacles/rocket")
 local player = nil
+local rocket = nil
 
 function love.load()
   Globals.Screen = {
@@ -21,6 +23,8 @@ function love.load()
   world:load()
   hud:load()
   player = Player.new(150, Globals.Screen.height / 2)
+  
+  rocket = Rocket.new()
 end
 
 
@@ -57,4 +61,5 @@ function love.draw()
   hud:draw()
   player:draw()
   Bullet:draw()
+  rocket:draw()
 end
