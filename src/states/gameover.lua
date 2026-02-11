@@ -14,13 +14,29 @@ function GameOver.onEnter()
   }
   
   Buttons = require("src/objs/button")
-  retryButton = Buttons.new("Retry", Globals.Screen.width / 2, Globals.Screen.height / 2)
-  exitButton = Buttons.new("Exit", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100)
+  retryButton = Buttons.new("Retry", Globals.Screen.width / 2, Globals.Screen.height / 2, function()
+      GameState:changeState("play")
+    end)
+  
+  exitButton = Buttons.new("Exit", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100, function()
+      love.event.quit()
+    end)
 end
 
 
 function GameOver.update(dt)
   
+end
+
+
+function GameOver.mousepressed(x, y, button)
+  if retryButton:mousepressed(x, y, button) then
+    return
+  end
+  
+  if exitButton:mousepressed(x, y, button) then
+    return
+  end
 end
 
 
