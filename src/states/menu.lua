@@ -14,13 +14,29 @@ function Menu.onEnter()
   }
   
   Buttons = require("src/objs/button")
-  playButton = Buttons.new("Play", Globals.Screen.width / 2, Globals.Screen.height / 2)
-  exitButton = Buttons.new("Exit", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100)
+  playButton = Buttons.new("Play", Globals.Screen.width / 2, Globals.Screen.height / 2, function()
+      GameState:changeState("play")
+    end)
+  
+  exitButton = Buttons.new("Exit", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100, function()
+      love.event.quit()
+    end)
 end
 
 
 function Menu.update(dt)
   
+end
+
+
+function Menu.mousepressed(x, y, button)
+  if playButton:mousepressed(x, y, button) then
+    return
+  end
+  
+  if exitButton:mousepressed(x, y, button) then
+    return
+  end
 end
 
 

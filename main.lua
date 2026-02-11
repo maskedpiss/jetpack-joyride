@@ -52,6 +52,13 @@ function love.update(dt)
 end
 
 
+function love.mousepressed(x, y, button)
+  if GameState.current and GameState.current.mousepressed then
+    GameState.current.mousepressed(x, y, button)
+  end
+end
+
+
 function love.draw()
   if GameState.current and GameState.current.draw then
     GameState.current.draw()
