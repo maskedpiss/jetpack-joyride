@@ -55,6 +55,14 @@ function Play.update(dt)
     bullet:shoot(player.x + player.width / 2, player.y + player.height)
   end
   
+  for i, rocket in ipairs(Globals.Rockets) do
+    if Play.Collisions:AABB(rocket, player) then
+      Globals.playerHealth = Globals.playerHealth - 1
+      player.yVel = 0
+      table.remove(Globals.Rockets, i)
+    end
+  end
+  
   for i, bullet in ipairs(Globals.Bullets) do
     if Play.Collisions:AABB(bullet, world.Ground) then
       table.remove(Globals.Bullets, i)
