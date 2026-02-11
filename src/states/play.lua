@@ -6,6 +6,8 @@ local world = nil
 local hud = nil
 local Player = nil
 local player = nil
+local Zapper = nil
+local zapper = nil
 local bullet = nil
 local rocket = nil
 
@@ -18,6 +20,9 @@ function Play.onEnter()
   
   Player = require("src/objs/player")
   player = Player.new(150, Globals.Screen.height / 2)
+  
+  Zapper = require("src/objs/obstacles/zapper")
+  zapper = Zapper.new()
   
   bullet = require("src/objs/bullet")
   rocket = require("src/objs/obstacles/rocket")
@@ -92,6 +97,7 @@ function Play.draw()
   player:draw()
   bullet:draw()
   hud:draw()
+  zapper:draw()
   
   for i, rocket in ipairs(Globals.Rockets) do
     rocket:draw()
