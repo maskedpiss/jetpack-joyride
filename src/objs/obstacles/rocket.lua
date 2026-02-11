@@ -11,7 +11,7 @@ end
 
 
 function Rocket:reset()
-  self.x = Globals.Screen.width / 2
+  self.x = Globals.Screen.width
   self.y = math.random(50, (Globals.Screen.height - 150))
   self.width = 100
   self.height = 50
@@ -21,6 +21,10 @@ end
 
 function Rocket:update(dt)
   self.x = self.x - self.speed * dt
+  
+  if self.x + self.width < Globals.Screen.x then
+    self:reset()
+  end
 end
 
 
