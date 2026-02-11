@@ -7,6 +7,7 @@ local hud = nil
 local Player = nil
 local player = nil
 local bullet = nil
+local rocket = nil
 
 function Play.onEnter()
   world = require("src/objs/gameworld")
@@ -19,6 +20,9 @@ function Play.onEnter()
   player = Player.new(150, Globals.Screen.height / 2)
   
   bullet = require("src/objs/bullet")
+  rocket = require("src/objs/obstacles/rocket")
+  
+  Globals.rocketSpawnTimer = math.random(2, 5)
 end
 
 
@@ -29,8 +33,18 @@ function Play.update(dt)
     Globals.scoreTimer = 0
   end
   
+  Globals.rocketSpawnTimer = Globals.rocketSpawnTimer - dt
+  if Globals.rocketSpawnTimer <= 0 and #Globals.Rockets == 0 then
+    local newRocket = rocket.new()
+    table.insert(Globals.Rockets, newRocket)
+  end
+  
   player:update(dt)
   bullet:update(dt)
+  
+  for i, rocket in ipairs(Globals.Rockets) do
+    rocket:update(dt)
+  end
   
   if Play.Collisions:AABB(player, world.Ground) then
     player.yVel = 0
@@ -54,6 +68,10 @@ function Play.draw()
   player:draw()
   bullet:draw()
   hud:draw()
+  
+  for i, rocket in ipairs(Globals.Rockets) do
+    rocket:draw()
+  end
 end
 
 
