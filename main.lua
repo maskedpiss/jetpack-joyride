@@ -9,7 +9,8 @@ Globals.rocketSpawnTimer = 0
 GameState = {
     current = nil,
     state_paths = {
-        menu = "src/states/menu"
+        menu = "src/states/menu",
+        play = "src/states/play"
     },
     loaded_states = {}
 }
