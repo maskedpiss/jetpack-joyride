@@ -1,5 +1,4 @@
 Globals = {}
-Globals.Collisions = require("src/utils/collisions")
 Globals.Bullets = {}
 Globals.Rockets = {}
 Globals.Score = 0
