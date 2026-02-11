@@ -1,7 +1,7 @@
 Globals = {}
 Globals.Collisions = require("src/utils/collisions")
 Globals.Bullets = {}
-Globals.Score = 000000
+Globals.Score = 0
 Globals.Timer = 0
 
 local world = require("src/objs/gameworld")
