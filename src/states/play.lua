@@ -1,7 +1,10 @@
 local Play = {}
 
+local world = nil
+
 function Play.onEnter()
-  
+  world = require("src/objs/gameworld")
+  world:load()
 end
 
 
@@ -11,7 +14,7 @@ end
 
 
 function Play.draw()
-  
+  world:draw()
 end
 
 
