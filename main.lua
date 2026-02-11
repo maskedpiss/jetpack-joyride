@@ -48,6 +48,8 @@ end
 
 
 function love.update(dt)
+  dt = math.min(dt, 0.07)
+  
   if GameState.current and GameState.current.update then
     GameState.current.update(dt)
   end
