@@ -23,6 +23,12 @@ end
 
 
 function Play.update(dt)
+  Globals.scoreTimer = Globals.scoreTimer + dt
+  if Globals.scoreTimer >= 1 then
+    Globals.Score = Globals.Score + 5
+    Globals.scoreTimer = 0
+  end
+  
   player:update(dt)
   bullet:update(dt)
   
