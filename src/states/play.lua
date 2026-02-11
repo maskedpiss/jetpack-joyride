@@ -59,6 +59,18 @@ function Play.update(dt)
     if Play.Collisions:AABB(bullet, world.Ground) then
       table.remove(Globals.Bullets, i)
     end
+    
+    for i, rocket in ipairs(Globals.Rockets) do
+      if Play.Collisions:AABB(bullet, rocket) then
+        rocket.health = rocket.health - 1
+        table.remove(Globals.Bullets, i)
+        
+        if rocket.health <= 0 then
+          table.remove(Globals.Rockets, i)
+          Globals.rocketSpawnTimer = math.random(2, 5)
+        end
+      end
+    end
   end
 end
 
