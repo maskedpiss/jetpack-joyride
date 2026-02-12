@@ -6,4 +6,11 @@ function Graphics:loadFonts()
   }
 end
 
+
+function Graphics:loadSprites()
+  self.Sprites = {
+      BG1 = love.graphics.newImage("res/sprites/BG1.png")
+  }
+end
+
 return Graphics
