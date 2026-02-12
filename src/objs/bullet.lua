@@ -1,42 +1,43 @@
 local Bullet = {}
+Bullet.__index = Bullet
 
-Bullet.cooldownTimer = 0.15
+Bullet.cooldownTimer = 0.1
 
 function Bullet.new(x, y)
-  local instance = {}
-  setmetatable(instance, { __index = Bullet })
-  
-  instance.x = x
-  instance.y = y
-  instance.width = 5
-  instance.height = 5
-  instance.speed = 500
-  
-  return instance
+  return setmetatable({
+      x = x,
+      y = y,
+      width = 4,
+      height = 8,
+      speed = 700
+  }, Bullet)
 end
 
 
-function Bullet:shoot(x, y)
+function Bullet:shoot(x, y, dt)
+  Bullet.cooldownTimer = (Bullet.cooldownTimer or 0) - dt
   if Bullet.cooldownTimer <= 0 then
-    local newBullet = Bullet.new(x, y)
-    table.insert(Globals.Bullets, newBullet)
-    Bullet.cooldownTimer = 0.15
+    table.insert(Globals.Bullets, Bullet.new(x, y))
+    Bullet.cooldownTimer = 0.1
   end
 end
 
 
 function Bullet:update(dt)
-  for i, bullet in ipairs(Globals.Bullets) do
-    bullet.y = bullet.y + bullet.speed * dt
+  for i = #Globals.Bullets, 1, -1 do
+    local b = Globals.Bullets[i]
+    b.y = b.y + b.speed * dt
+    
+    if b.y > Globals.Screen.height then
+      table.remove(Globals.Bullets, i)
+    end
   end
-  
-  Bullet.cooldownTimer = Bullet.cooldownTimer - dt
 end
 
 
 function Bullet:draw()
+  love.graphics.setColor(1, 0.9, 0)
   for i, bullet in ipairs(Globals.Bullets) do
-    love.graphics.setColor(1, 1, 1)
     love.graphics.rectangle("fill", bullet.x, bullet.y, bullet.width, bullet.height)
   end
 end
