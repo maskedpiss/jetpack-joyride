@@ -40,17 +40,16 @@ function Play.update(dt)
   
   Globals.rocketSpawnTimer = Globals.rocketSpawnTimer - dt
   if Globals.rocketSpawnTimer <= 0 and #Globals.Rockets == 0 then
-    local newRocket = rocket.new()
-    table.insert(Globals.Rockets, newRocket)
+    table.insert(Globals.Rockets, rocket.new())
   end
   
   player:update(dt)
   bullet:update(dt)
   zapper:update(dt)
   
-  for i, rocket in ipairs(Globals.Rockets) do
-    rocket:update(dt)
-  end
+  --for i, rocket in ipairs(Globals.Rockets) do
+  --  rocket:update(dt)
+  --end
   
   if Play.Collisions:AABB(player, world.Ground) then
     player.yVel = 0
@@ -66,10 +65,11 @@ function Play.update(dt)
     zapper:reset()
   end
   
-  for i, rocket in ipairs(Globals.Rockets) do
-    if Play.Collisions:AABB(rocket, player) then
+  for i = #Globals.Rockets, 1, -1 do
+    local r = Globals.Rockets[i]
+    r:update(dt)
+    if Play.Collisions:AABB(r, player) then
       Globals.playerHealth = Globals.playerHealth - 1
-      player.yVel = 0
       table.remove(Globals.Rockets, i)
     end
   end
