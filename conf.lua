@@ -1,5 +1,5 @@
 function love.conf(t)
-  t.title = "Really Good Game (Trust Me)"
+  t.title = "Propulsion Test"
   t.version = "11.5"
   
   t.window.width = 1160

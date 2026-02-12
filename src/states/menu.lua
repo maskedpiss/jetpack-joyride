@@ -8,7 +8,7 @@ local exitButton = nil
 
 function Menu.onEnter()
   Menu.Title = {
-      text = "Jetpack Joyride",
+      text = "Propulsion Test",
       x = Globals.Screen.x,
       y = 50
   }
