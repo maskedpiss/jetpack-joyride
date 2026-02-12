@@ -5,6 +5,15 @@ local playButton = nil
 local exitButton = nil
 
 function Menu.onEnter()
+  Menu.BG = {
+      sprite = Globals.Graphics.Sprites.BG1,
+      x = Globals.Screen.x,
+      y = Globals.Screen.y,
+      width = Globals.Graphics.Sprites.BG1:getWidth(),
+      height = Globals.Graphics.Sprites.BG1:getHeight(),
+      speed = 50
+  }
+  
   Menu.Title = {
       text = "[PROPULSIONµTEST]",
       x = Globals.Screen.x,
@@ -23,7 +32,11 @@ end
 
 
 function Menu.update(dt)
+  Menu.BG.x = Menu.BG.x - Menu.BG.speed * dt
   
+  if Menu.BG.x + Menu.BG.width < Globals.Screen.x then
+    Menu.BG.x = Globals.Screen.x
+  end
 end
 
 
@@ -40,6 +53,11 @@ end
 
 function Menu.draw()
   love.graphics.setColor(1, 1, 1)
+  
+  love.graphics.draw(Menu.BG.sprite, Menu.BG.x, Menu.BG.y)
+  love.graphics.draw(Menu.BG.sprite, Menu.BG.x + Menu.BG.width, Menu.BG.y)
+  
+  love.graphics.setColor(0, 0, 0)
   love.graphics.setFont(Globals.Graphics.Fonts.TitleFont)
   love.graphics.printf(Menu.Title.text, Menu.Title.x, Menu.Title.y, Globals.Screen.width, "center")
   
