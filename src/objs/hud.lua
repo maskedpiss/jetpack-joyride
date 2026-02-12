@@ -3,14 +3,15 @@ local HUD = {}
 function HUD:load()
   self.Score = {
       font = love.graphics.newFont(64),
-      x = Globals.Screen.y,
+      x = Globals.Screen.x,
       y = 50
   }
   
   self.Health = {
-      x = Globals.Screen.width - 200,
+      x = 50,
       y = 50,
-      radius = 10
+      radius = 12,
+      spacing = 30
   }
 end
 
@@ -26,15 +27,9 @@ function HUD:draw()
   love.graphics.printf(Globals.Score.."m", self.Score.x, self.Score.y, Globals.Screen.width, "center")
   
   love.graphics.setColor(1, 0, 0)
-  if Globals.playerHealth > 2 then
-    love.graphics.circle("fill", self.Health.x, self.Health.y, self.Health.radius)
-    love.graphics.circle("fill", self.Health.x + 25, self.Health.y, self.Health.radius)
-    love.graphics.circle("fill", self.Health.x + 50, self.Health.y, self.Health.radius)
-  elseif Globals.playerHealth > 1 then
-    love.graphics.circle("fill", self.Health.x, self.Health.y, self.Health.radius)
-    love.graphics.circle("fill", self.Health.x + 25, self.Health.y, self.Health.radius)
-  elseif Globals.playerHealth <= 1 then
-    love.graphics.circle("fill", self.Health.x, self.Health.y, self.Health.radius)
+  for i = 1, Globals.playerHealth do
+    local drawX = self.Health.x + (i - 1) * self.Health.spacing
+    love.graphics.circle("fill", drawX, self.Health.y, self.Health.radius)
   end
 end
 
