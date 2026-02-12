@@ -8,7 +8,7 @@ function Player.new(x, y)
   instance.y = y
   instance.width = 20
   instance.height = 40
-  instance.gravity = 300
+  instance.gravity = 1500
   instance.yVel = 0
   
   return instance
