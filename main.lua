@@ -1,4 +1,5 @@
 Globals = {}
+Globals.Graphics = require("src/utils/graphics")
 Globals.Bullets = {}
 Globals.Rockets = {}
 Globals.Score = 0
@@ -42,6 +43,8 @@ function love.load()
       width = love.graphics.getWidth(),
       height = love.graphics.getHeight()
   }
+  
+  Globals.Graphics:loadFonts()
   
   GameState:changeState("menu")
 end
