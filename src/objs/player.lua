@@ -9,6 +9,8 @@ function Player.new(x, y)
   instance.width = 20
   instance.height = 40
   instance.gravity = 1500
+  instance.thrust = 2500
+  instance.terminalVelocity = 800
   instance.yVel = 0
   
   return instance
@@ -17,11 +19,12 @@ end
 
 function Player:update(dt)
   if love.mouse.isDown(1) then
-    self.yVel = self.yVel - self.gravity * dt
+    self.yVel = self.yVel - self.thrust * dt
   else
     self.yVel = self.yVel + self.gravity * dt
   end
   
+  self.yVel = math.max(-self.terminalVelocity, math.min(self.yVel, self.terminalVelocity))
   self.y = self.y + self.yVel * dt
   
   if self.y < Globals.Screen.y then
