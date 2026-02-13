@@ -43,6 +43,7 @@ function Play.update(dt)
     table.insert(Globals.Rockets, rocket.new())
   end
   
+  world:update(dt)
   player:update(dt)
   bullet:update(dt)
   zapper:update(dt)
