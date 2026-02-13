@@ -7,8 +7,9 @@ function Button.new(text, x, y, callback)
   setmetatable(instance, { __index = Button })
   
   instance.text = text
-  instance.width = 200
-  instance.height = 60
+  instance.sprite = Globals.Graphics.Sprites.Button
+  instance.width = instance.sprite:getWidth()
+  instance.height = instance.sprite:getHeight()
   instance.x = x - (instance.width / 2)
   instance.y = y - (instance.height / 2)
   instance.callback = callback or function() end
@@ -39,7 +40,7 @@ end
 
 function Button:draw()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.rectangle("fill", self.x, self.y, self.width, self.height, 5)
+  love.graphics.draw(self.sprite, self.x, self.y)
   
   love.graphics.setColor(0, 0, 0)
   love.graphics.setFont(buttonFont)

@@ -55,6 +55,9 @@ function GameOver.draw()
   love.graphics.draw(GameOver.BG.sprite, GameOver.BG.x + GameOver.BG.width, GameOver.BG.y)
   love.graphics.draw(Globals.Graphics.Sprites.BG2, Globals.Screen.x, Globals.Screen.y)
   
+  love.graphics.draw(Globals.Graphics.Sprites.EndCard, GameOver.Message.x + 6, GameOver.Message.y - 6)
+  
+  love.graphics.setColor(0, 0, 0)
   love.graphics.setFont(Globals.Graphics.Fonts.TitleFont)
   love.graphics.printf(GameOver.Message.text, GameOver.Message.x, GameOver.Message.y, Globals.Screen.width, "center")
   
