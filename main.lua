@@ -48,6 +48,7 @@ function love.load()
   Globals.Graphics:loadSprites()
   
   GameState:changeState("menu")
+  print(Globals.Graphics.Fonts.TitleFont:getHeight())
 end
 
 

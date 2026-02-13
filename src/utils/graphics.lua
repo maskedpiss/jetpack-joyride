@@ -9,7 +9,8 @@ end
 
 function Graphics:loadSprites()
   self.Sprites = {
-      BG1 = love.graphics.newImage("res/sprites/BG1.png")
+      BG1 = love.graphics.newImage("res/sprites/BG1.png"),
+      TitleCard = love.graphics.newImage("res/sprites/TitleCard.png")
   }
 end
 

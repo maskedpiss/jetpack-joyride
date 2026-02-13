@@ -57,6 +57,7 @@ function Menu.draw()
   love.graphics.draw(Menu.BG.sprite, Menu.BG.x, Menu.BG.y)
   love.graphics.draw(Menu.BG.sprite, Menu.BG.x + Menu.BG.width, Menu.BG.y)
   
+  love.graphics.draw(Globals.Graphics.Sprites.TitleCard, Menu.Title.x + 6, Menu.Title.y - 6)
   love.graphics.setColor(0, 0, 0)
   love.graphics.setFont(Globals.Graphics.Fonts.TitleFont)
   love.graphics.printf(Menu.Title.text, Menu.Title.x, Menu.Title.y, Globals.Screen.width, "center")
