@@ -5,6 +5,14 @@ local retryButton = nil
 local exitButton = nil
 
 function GameOver.onEnter()
+  GameOver.BG = {
+      sprite = Globals.Graphics.Sprites.BG1,
+      x = 0,
+      y = 0,
+      width = Globals.Graphics.Sprites.BG1:getWidth(),
+      speed = 50
+  }
+  
   GameOver.Message = {
       text = "[GAMEµOVER!]",
       x = Globals.Screen.x,
@@ -23,7 +31,10 @@ end
 
 
 function GameOver.update(dt)
-  
+  GameOver.BG.x = GameOver.BG.x - GameOver.BG.speed * dt
+  if GameOver.BG.x + GameOver.BG.width < Globals.Screen.x then
+    GameOver.BG.x = Globals.Screen.x
+  end
 end
 
 
@@ -40,6 +51,9 @@ end
 
 function GameOver.draw()
   love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(GameOver.BG.sprite, GameOver.BG.x, GameOver.BG.y)
+  love.graphics.draw(GameOver.BG.sprite, GameOver.BG.x + GameOver.BG.width, GameOver.BG.y)
+  
   love.graphics.setFont(Globals.Graphics.Fonts.TitleFont)
   love.graphics.printf(GameOver.Message.text, GameOver.Message.x, GameOver.Message.y, Globals.Screen.width, "center")
   
