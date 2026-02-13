@@ -56,6 +56,7 @@ function Menu.draw()
   
   love.graphics.draw(Menu.BG.sprite, Menu.BG.x, Menu.BG.y)
   love.graphics.draw(Menu.BG.sprite, Menu.BG.x + Menu.BG.width, Menu.BG.y)
+  love.graphics.draw(Globals.Graphics.Sprites.BG2, Globals.Screen.x, Globals.Screen.y)
   
   love.graphics.draw(Globals.Graphics.Sprites.TitleCard, Menu.Title.x + 6, Menu.Title.y - 6)
   love.graphics.setColor(0, 0, 0)
