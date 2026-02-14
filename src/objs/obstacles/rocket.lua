@@ -11,12 +11,13 @@ end
 
 
 function Rocket:reset()
+  self.sprite = Globals.Graphics.Sprites.Rocket
   self.x = Globals.Screen.width
   self.y = math.random(50, (Globals.Screen.height - 150))
-  self.width = 100
-  self.height = 50
+  self.width = self.sprite:getWidth()
+  self.height = self.sprite:getHeight()
   self.speed = math.random(200, 500)
-  self.health = 3
+  self.health = 2
 end
 
 
@@ -30,8 +31,8 @@ end
 
 
 function Rocket:draw()
-  love.graphics.setColor(0, 0, 0)
-  love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 return Rocket
