@@ -57,10 +57,10 @@ function Play.update(dt)
     bullet:shoot(player.x + player.width / 2, player.y + player.height, dt)
   end
   
- -- if Play.Collisions:checkHitBox(player, zapper) then
- --   Globals.playerHealth = Globals.playerHealth - 1
- --   zapper:reset()
- -- end
+  if Play.Collisions:checkHitBox(player, zapper.Laser) then
+    Globals.playerHealth = Globals.playerHealth - 1
+    zapper:reset()
+  end
   
   for i = #Globals.Rockets, 1, -1 do
     local r = Globals.Rockets[i]
