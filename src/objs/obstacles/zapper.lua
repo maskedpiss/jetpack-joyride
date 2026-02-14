@@ -21,6 +21,7 @@ function Zapper:reset()
   }
   
   self.Laser = {
+    sprite = Globals.Graphics.Sprites.LaserBeam,
   	y = self.Generator.y,
   	width = 200,
   	height = 25
@@ -42,8 +43,8 @@ function Zapper:draw()
   love.graphics.draw(self.Generator.sprite, self.Generator.x, self.Generator.y)
   love.graphics.draw(self.Generator.sprite, (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
   
-  love.graphics.setColor(1, 1, 0)
-  love.graphics.rectangle("fill", (self.Generator.x + self.Generator.width), self.Laser.y, self.Laser.width, self.Laser.height)
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(self.Laser.sprite, (self.Generator.x + self.Generator.width), self.Laser.y)
 end
 
 return Zapper
