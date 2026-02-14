@@ -5,6 +5,7 @@ Bullet.cooldownTimer = 0.1
 
 function Bullet.new(x, y)
   return setmetatable({
+  	  sprite = Globals.Graphics.Sprites.Bullet,
       x = x,
       y = y,
       width = 4,
@@ -38,7 +39,7 @@ end
 function Bullet:draw()
   love.graphics.setColor(1, 0.9, 0)
   for i, bullet in ipairs(Globals.Bullets) do
-    love.graphics.rectangle("fill", bullet.x, bullet.y, bullet.width, bullet.height)
+    love.graphics.draw(bullet.sprite, bullet.x, bullet.y)
   end
 end
 

@@ -18,7 +18,8 @@ function Graphics:loadSprites()
       Button = love.graphics.newImage("res/sprites/Button.png"),
       Player = love.graphics.newImage("res/sprites/Player.png"),
       Rocket = love.graphics.newImage("res/sprites/Rocket.png"),
-      Heart = love.graphics.newImage("res/sprites/Heart.png")
+      Heart = love.graphics.newImage("res/sprites/Heart.png"),
+      Bullet = love.graphics.newImage("res/sprites/Bullet.png")
   }
 end
 
