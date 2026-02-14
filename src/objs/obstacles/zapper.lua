@@ -19,12 +19,13 @@ function Zapper:reset()
   	height = Globals.Graphics.Sprites.LaserGenerator:getHeight(),
   	speed = 150
   }
-  
+
+  local h = 25
   self.Laser = {
     sprite = Globals.Graphics.Sprites.LaserBeam,
-  	y = self.Generator.y,
   	width = 200,
-  	height = 25
+  	height = h,
+  	y = (self.Generator.y + (h / 2)) + 4
   }
 end
 
