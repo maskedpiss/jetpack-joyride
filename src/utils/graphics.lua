@@ -16,7 +16,8 @@ function Graphics:loadSprites()
       EndCard = love.graphics.newImage("res/sprites/GameOverCard.png"),
       Button = love.graphics.newImage("res/sprites/Button.png"),
       Player = love.graphics.newImage("res/sprites/Player.png"),
-      Rocket = love.graphics.newImage("res/sprites/Rocket.png")
+      Rocket = love.graphics.newImage("res/sprites/Rocket.png"),
+      Heart = love.graphics.newImage("res/sprites/Heart.png")
   }
 end
 
