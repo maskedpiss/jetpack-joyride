@@ -27,13 +27,15 @@ function Zapper:reset()
   	height = h,
   	y = (self.Generator.y + (h / 2)) + 4
   }
+
+  self.totalWidth = (self.Generator.width * 2) + self.Laser.width
 end
 
 
 function Zapper:update(dt)
   self.Generator.x = self.Generator.x - self.Generator.speed * dt
 
-  if self.Generator.x + self.Generator.width < Globals.Screen.x then
+  if self.Generator.x + self.totalWidth < Globals.Screen.x then
 	self:reset()
   end
 end
