@@ -17,7 +17,7 @@ function Zapper:reset()
   	y = math.random(50, (Globals.Screen.height - 150)),
   	width = Globals.Graphics.Sprites.LaserGenerator:getWidth(),
   	height = Globals.Graphics.Sprites.LaserGenerator:getHeight(),
-  	speed = 20
+  	speed = 150
   }
   
   self.Laser = {
