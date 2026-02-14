@@ -48,7 +48,7 @@ function Play.update(dt)
   bullet:update(dt)
   zapper:update(dt)
   
-  if Play.Collisions:AABB(player, world.Ground) then
+  if Play.Collisions:genericAABB(player, world.Ground) then
     player.yVel = 0
     player.y = world.Ground.y - player.height
   end
@@ -57,7 +57,7 @@ function Play.update(dt)
     bullet:shoot(player.x + player.width / 2, player.y + player.height, dt)
   end
   
-  if Play.Collisions:AABB(player, zapper) then
+  if Play.Collisions:checkHitBox(player, zapper) then
     Globals.playerHealth = Globals.playerHealth - 1
     zapper:reset()
   end
@@ -65,7 +65,7 @@ function Play.update(dt)
   for i = #Globals.Rockets, 1, -1 do
     local r = Globals.Rockets[i]
     r:update(dt)
-    if Play.Collisions:AABB(r, player) then
+    if Play.Collisions:checkHitBox(player, r) then
       Globals.playerHealth = Globals.playerHealth - 1
       table.remove(Globals.Rockets, i)
     end
@@ -75,7 +75,7 @@ function Play.update(dt)
     local b = Globals.Bullets[i]
     local bulletRemoved = false
     
-    if Play.Collisions:AABB(b, world.Ground) then
+    if Play.Collisions:genericAABB(b, world.Ground) then
       table.remove(Globals.Bullets, i)
       bulletRemoved = true
     end
@@ -83,7 +83,7 @@ function Play.update(dt)
     if not bulletRemoved then
       for j = #Globals.Rockets, 1, -1 do
         local r = Globals.Rockets[j]
-        if Play.Collisions:AABB(b, r) then
+        if Play.Collisions:genericAABB(b, r) then
           r.health = r.health - 1
           table.remove(Globals.Bullets, i)
           if r.health <= 0 then

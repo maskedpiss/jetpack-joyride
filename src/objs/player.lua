@@ -7,13 +7,15 @@ function Player.new(x, y)
   instance.sprite = Globals.Graphics.Sprites.Player
   instance.x = x
   instance.y = y
-  instance.width = 20
-  instance.height = 40
+  instance.ox = 6
+  instance.oy = 12
+  instance.width = 18
+  instance.height = 48
   instance.gravity = 1500
   instance.thrust = 2500
   instance.terminalVelocity = 800
   instance.yVel = 0
-  
+
   return instance
 end
 
@@ -28,9 +30,9 @@ function Player:update(dt)
   self.yVel = math.max(-self.terminalVelocity, math.min(self.yVel, self.terminalVelocity))
   self.y = self.y + self.yVel * dt
   
-  if self.y < Globals.Screen.y then
+  if self.y + self.oy  < Globals.Screen.y then
     self.yVel = 0
-    self.y = Globals.Screen.y
+    self.y = Globals.Screen.y - self.oy
   end
 end
 
