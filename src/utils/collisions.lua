@@ -6,8 +6,13 @@ function Collisions:checkHitBox(a, b)
   local a_top = a.y + a.oy
   local a_bottom = a.y + a.oy + a.height
 
-  return a_left < b.x + b.width and a_right > b.x and
-         a_top < b.y + b.height and a_bottom > b.y
+  local b_left = b.x + b.ox
+  local b_right = b.x + b.ox + b.width
+  local b_top = b.y + b.oy
+  local b_bottom = b.y + b.oy + b.height
+
+  return a_left < b_right and a_right > b_left and
+         a_top < b_bottom and a_bottom > b_top
 end
 
 

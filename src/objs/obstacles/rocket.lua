@@ -14,8 +14,10 @@ function Rocket:reset()
   self.sprite = Globals.Graphics.Sprites.Rocket
   self.x = Globals.Screen.width
   self.y = math.random(50, (Globals.Screen.height - 150))
-  self.width = self.sprite:getWidth()
-  self.height = self.sprite:getHeight()
+  self.ox = 8
+  self.oy = 11
+  self.width = 64
+  self.height = 16
   self.speed = math.random(200, 500)
   self.health = 2
 end
