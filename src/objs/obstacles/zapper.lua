@@ -11,26 +11,39 @@ end
 
 
 function Zapper:reset()
-  self.x = Globals.Screen.width
-  self.y = math.random(50, (Globals.Screen.height - 150))
-  self.width = 200
-  self.height = 25
-  self.speed = 200
+  self.Generator = {
+  	sprite = Globals.Graphics.Sprites.LaserGenerator,
+  	x = Globals.Screen.width,
+  	y = math.random(50, (Globals.Screen.height - 150)),
+  	width = Globals.Graphics.Sprites.LaserGenerator:getWidth(),
+  	height = Globals.Graphics.Sprites.LaserGenerator:getHeight(),
+  	speed = 20
+  }
+  
+  self.Laser = {
+  	y = self.Generator.y,
+  	width = 200,
+  	height = 25
+  }
 end
 
 
 function Zapper:update(dt)
-  self.x = self.x - self.speed * dt
-  
-  if self.x + self.width < Globals.Screen.x then
-    self:reset()
+  self.Generator.x = self.Generator.x - self.Generator.speed * dt
+
+  if self.Generator.x + self.Generator.width < Globals.Screen.x then
+	self:reset()
   end
 end
 
 
 function Zapper:draw()
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(self.Generator.sprite, self.Generator.x, self.Generator.y)
+  love.graphics.draw(self.Generator.sprite, (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
+  
   love.graphics.setColor(1, 1, 0)
-  love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+  love.graphics.rectangle("fill", (self.Generator.x + self.Generator.width), self.Laser.y, self.Laser.width, self.Laser.height)
 end
 
 return Zapper
