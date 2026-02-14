@@ -2,7 +2,6 @@ local HUD = {}
 
 function HUD:load()
   self.Score = {
-      font = love.graphics.newFont(64),
       x = Globals.Screen.x,
       y = 50
   }
@@ -23,7 +22,7 @@ end
 
 function HUD:draw()
   love.graphics.setColor(0, 0, 0)
-  love.graphics.setFont(self.Score.font)
+  love.graphics.setFont(Globals.Graphics.Fonts.ScoreFont)
   love.graphics.printf(Globals.Score.."m", self.Score.x, self.Score.y, Globals.Screen.width, "center")
   
   love.graphics.setColor(1, 0, 0)
