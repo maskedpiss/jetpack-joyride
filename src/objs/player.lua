@@ -3,7 +3,8 @@ local Player = {}
 function Player.new(x, y)
   local instance = {}
   setmetatable(instance, { __index = Player })
-  
+
+  instance.sprite = Globals.Graphics.Sprites.Player
   instance.x = x
   instance.y = y
   instance.width = 20
@@ -36,7 +37,7 @@ end
 
 function Player:draw()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+  love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 return Player

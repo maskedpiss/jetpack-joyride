@@ -14,7 +14,8 @@ function Graphics:loadSprites()
       BG2 = love.graphics.newImage("res/sprites/BG2.png"),
       TitleCard = love.graphics.newImage("res/sprites/TitleCard.png"),
       EndCard = love.graphics.newImage("res/sprites/GameOverCard.png"),
-      Button = love.graphics.newImage("res/sprites/Button.png")
+      Button = love.graphics.newImage("res/sprites/Button.png"),
+      Player = love.graphics.newImage("res/sprites/Player.png")
   }
 end
 
