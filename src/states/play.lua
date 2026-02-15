@@ -49,7 +49,7 @@ function Play.update(dt)
   end
   
   if love.mouse.isDown(1) then
-    bullet:shoot(player.x + player.width / 2, player.y + player.height, dt)
+    bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
   end
   
   if Play.Collisions:checkHitBox(player, zapper.Laser) then
