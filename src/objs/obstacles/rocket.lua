@@ -1,5 +1,8 @@
 local Rocket = {}
 
+local timer = 0
+local frameDuration = 0.1
+
 function Rocket.new()
   local instance = {}
   setmetatable(instance, { __index = Rocket })
@@ -38,6 +41,15 @@ function Rocket:update(dt)
   
   if self.x + self.width < Globals.Screen.x then
     self:reset()
+  end
+
+  timer = timer + dt
+  if timer > frameDuration then
+	self.currentFrame = self.currentFrame + 1
+	timer = 0
+	if self.currentFrame > #self.rocketFrames then
+		self.currentFrame = 1
+	end
   end
 end
 
