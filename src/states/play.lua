@@ -88,7 +88,7 @@ function Play.update(dt)
           break
         end
       end
-      if Play.Collisions:genericAABB(b, zapper.Generator) then
+      if Play.Collisions:genericAABB(b, zapper.Generator) or Play.Collisions:genericAABB(b, zapper.genHitBox2) then
 	  	zapper.Generator.health = zapper.Generator.health - 1
 	  	table.remove(Globals.Bullets, i)
       end

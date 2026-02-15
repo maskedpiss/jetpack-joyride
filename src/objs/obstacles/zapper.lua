@@ -32,6 +32,13 @@ function Zapper:reset()
   	oy = 0
   }
 
+  self.genHitBox2 = {
+  	x = self.Laser.x + self.Laser.width,
+  	y = self.Generator.y,
+  	width = self.Generator.width,
+  	height = self.Generator.height
+  }
+
   self.totalWidth = (self.Generator.width * 2) + self.Laser.width
   self.isPoweredOn = false
   self.hasBeenHit = false
@@ -41,6 +48,7 @@ end
 function Zapper:update(dt)
   self.Generator.x = self.Generator.x - self.Generator.speed * dt
   self.Laser.x = self.Laser.x - self.Generator.speed * dt
+  self.genHitBox2.x = self.genHitBox2.x - self.Generator.speed * dt
 
   if self.Generator.x + self.totalWidth < Globals.Screen.x then
 	self:reset()
