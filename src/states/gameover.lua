@@ -35,6 +35,9 @@ function GameOver.update(dt)
   if GameOver.BG.x + GameOver.BG.width < Globals.Screen.x then
     GameOver.BG.x = Globals.Screen.x
   end
+
+  retryButton:update(dt)
+  exitButton:update(dt)
 end
 
 
@@ -45,6 +48,17 @@ function GameOver.mousepressed(x, y, button)
   
   if exitButton:mousepressed(x, y, button) then
     return
+  end
+end
+
+
+function GameOver.mousereleased(x, y, button)
+  if retryButton:mousereleased(x, y, button) then
+	return
+  end
+
+  if exitButton:mousereleased(x, y, button) then
+	return
   end
 end
 
