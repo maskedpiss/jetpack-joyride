@@ -2,30 +2,22 @@ local Play = {}
 
 Play.Collisions = require("src/utils/collisions")
 
-local world = nil
-local hud = nil
-local Player = nil
+local world = require("src/objs/gameworld")
+local hud = require("src/objs/hud")
+local Player = require("src/objs/player")
+local Zapper = require("src/objs/obstacles/zapper")
+local bullet = require("src/objs/bullet")
+local rocket = require("src/objs/obstacles/rocket")
+
 local player = nil
-local Zapper = nil
 local zapper = nil
-local bullet = nil
-local rocket = nil
 
 function Play.onEnter()
-  world = require("src/objs/gameworld")
   world:load()
-  
-  hud = require("src/objs/hud")
   hud:load()
   
-  Player = require("src/objs/player")
   player = Player.new(150, Globals.Screen.height / 2)
-  
-  Zapper = require("src/objs/obstacles/zapper")
   zapper = Zapper.new()
-  
-  bullet = require("src/objs/bullet")
-  rocket = require("src/objs/obstacles/rocket")
   
   Globals.rocketSpawnTimer = math.random(2, 5)
 end
@@ -125,12 +117,8 @@ end
 function Play.onExit()
   Globals.Bullets = {}
   Globals.Rockets = {}
-  world = nil
-  hud = nil
-  Player = nil
   player = nil
-  bullet = nil
-  rocket = nil
+  zapper = nil
 end
 
 return Play

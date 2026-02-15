@@ -1,6 +1,7 @@
 local GameOver = {}
 
-local Buttons = nil
+local Buttons = require("src/objs/button")
+
 local retryButton = nil
 local exitButton = nil
 
@@ -19,7 +20,6 @@ function GameOver.onEnter()
       y = 50
   }
   
-  Buttons = require("src/objs/button")
   retryButton = Buttons.new("Retry", Globals.Screen.width / 2, Globals.Screen.height / 2, function()
       GameState:changeState("play")
     end)
@@ -68,7 +68,6 @@ end
 
 function GameOver.onExit()
   GameOver.Message = {}
-  Buttons = nil
   retryButton = nil
   exitButton = nil
   Globals.Score = 0

@@ -1,6 +1,6 @@
 local Menu = {}
 
-local Buttons = nil
+local Buttons = require("src/objs/button")
 local playButton = nil
 local exitButton = nil
 
@@ -20,7 +20,6 @@ function Menu.onEnter()
       y = 50
   }
   
-  Buttons = require("src/objs/button")
   playButton = Buttons.new("Play", Globals.Screen.width / 2, Globals.Screen.height / 2, function()
       GameState:changeState("play")
     end)
