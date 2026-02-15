@@ -1,6 +1,6 @@
 local Animation = {}
 
-function parseSpriteSheet(texture, frameWidth, frameHeight)
+function Animation:parseSpriteSheet(texture, frameWidth, frameHeight)
   local sheetWidth, sheetHeight = texture:getDimensions()
   local quads = {}
   local counter = 1
@@ -11,6 +11,8 @@ function parseSpriteSheet(texture, frameWidth, frameHeight)
 		counter = counter + 1
 	end
   end
+
+  return quads
 end
 
 return Animation

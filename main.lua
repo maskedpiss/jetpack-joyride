@@ -1,5 +1,6 @@
 Globals = {}
 Globals.Graphics = require("src/utils/graphics")
+Globals.Animation = require("src/utils/animation")
 Globals.Bullets = {}
 Globals.Rockets = {}
 Globals.Score = 0
