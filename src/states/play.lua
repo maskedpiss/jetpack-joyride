@@ -95,9 +95,10 @@ function Play.update(dt)
           end
           break
         end
-        if Play.Collisions:genericAABB(b, zapper.Generator) then
-			zapper.Generator.health = zapper.Generator.health - 1
-        end
+      end
+      if Play.Collisions:genericAABB(b, zapper.Generator) then
+	  	zapper.Generator.health = zapper.Generator.health - 1
+	  	table.remove(Globals.Bullets, i)
       end
     end
   end
