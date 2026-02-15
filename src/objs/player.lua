@@ -16,7 +16,18 @@ function Player.new(x, y)
   instance.terminalVelocity = 800
   instance.yVel = 0
 
+  instance:animate()
+
   return instance
+end
+
+
+function Player:animate()
+  local frameWidth = 30
+  local frameHeight = 60
+
+  self.playerFrames = Globals.Animation:parseSpriteSheet(self.sprite, frameWidth, frameHeight)
+  self.currentFrame = 1
 end
 
 
@@ -39,7 +50,7 @@ end
 
 function Player:draw()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(self.sprite, self.x, self.y)
+  love.graphics.draw(self.sprite, self.playerFrames[self.currentFrame], self.x, self.y)
 end
 
 return Player
