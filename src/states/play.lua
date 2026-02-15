@@ -43,6 +43,9 @@ function Play.update(dt)
   if Play.Collisions:genericAABB(player, world.Ground) then
     player.yVel = 0
     player.y = world.Ground.y - player.height
+    player.isGrounded = true
+  else
+  	player.isGrounded = false
   end
   
   if love.mouse.isDown(1) then

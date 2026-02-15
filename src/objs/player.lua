@@ -15,6 +15,7 @@ function Player.new(x, y)
   instance.thrust = 2500
   instance.terminalVelocity = 800
   instance.yVel = 0
+  instance.isGrounded = false
 
   instance:animate()
 
@@ -44,6 +45,12 @@ function Player:update(dt)
   if self.y + self.oy  < Globals.Screen.y then
     self.yVel = 0
     self.y = Globals.Screen.y - self.oy
+  end
+
+  if self.isGrounded then
+	self.currentFrame = 1
+  else
+  	self.currentFrame = 2
   end
 end
 
