@@ -53,6 +53,17 @@ function Menu.mousepressed(x, y, button)
 end
 
 
+function Menu.mousereleased(x, y, button)
+  if playButton:mousereleased(x, y, button) then
+	return
+  end
+
+  if exitButton:mousereleased(x, y, button) then
+	return
+  end
+end
+
+
 function Menu.draw()
   love.graphics.setColor(1, 1, 1)
   

@@ -69,6 +69,13 @@ function love.mousepressed(x, y, button)
 end
 
 
+function love.mousereleased(x, y, button)
+  if GameState.current and GameState.current.mousereleased then
+	GameState.current.mousereleased(x, y, button)
+  end
+end
+
+
 function love.draw()
   if GameState.current and GameState.current.draw then
     GameState.current.draw()

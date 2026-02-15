@@ -29,10 +29,16 @@ end
 
 function Button:update(dt)
   local mouseX, mouseY = love.mouse.getPosition()
+  local button = 1
+  
   if self:isHovering(mouseX, mouseY) then
 	self.currentFrame = 2
   else
   	self.currentFrame = 1
+  end
+
+  if love.mouse.isDown(button) and self:isHovering(mouseX, mouseY) then
+	self.currentFrame = 3
   end
 end
 
@@ -45,8 +51,16 @@ end
 
 function Button:mousepressed(x, y, button)
   if self:isHovering(x, y) and button == 1 then
-    self:callback()
     return true
+  end
+  return false
+end
+
+
+function Button:mousereleased(x, y, button)
+  if self:isHovering(x, y) and button == 1 then
+	self:callback()
+	return true
   end
   return false
 end
