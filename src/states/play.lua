@@ -95,6 +95,9 @@ function Play.update(dt)
           end
           break
         end
+        if Play.Collisions:genericAABB(b, zapper.Generator) then
+			zapper.Generator.health = zapper.Generator.health - 1
+        end
       end
     end
   end

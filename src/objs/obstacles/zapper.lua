@@ -17,7 +17,8 @@ function Zapper:reset()
   	y = math.random(50, (Globals.Screen.height - 150)),
   	width = Globals.Graphics.Sprites.LaserGenerator:getWidth(),
   	height = Globals.Graphics.Sprites.LaserGenerator:getHeight(),
-  	speed = 150
+  	speed = 150,
+  	health = 2
   }
 
   local h = 25
@@ -47,6 +48,10 @@ function Zapper:update(dt)
 
   if self.Generator.x + self.totalWidth < Globals.Screen.width and not self.hasBeenHit then
   	self.isPoweredOn = true
+  end
+
+  if self.Generator.health <= 0 then
+  	self.isPoweredOn = false
   end
 end
 
