@@ -1,6 +1,6 @@
 local GameOver = {}
 
-local Buttons = require("src/objs/button")
+local Buttons = require("src.objs.button")
 
 local retryButton = nil
 local exitButton = nil

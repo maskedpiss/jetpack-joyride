@@ -1,6 +1,6 @@
 local Menu = {}
 
-local Buttons = require("src/objs/button")
+local Buttons = require("src.objs.button")
 local playButton = nil
 local exitButton = nil
 

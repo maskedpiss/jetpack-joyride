@@ -1,6 +1,6 @@
 Globals = {}
-Globals.Graphics = require("src/utils/graphics")
-Globals.Animation = require("src/utils/animation")
+Globals.Graphics = require("src.utils.graphics")
+Globals.Animation = require("src.utils.animation")
 Globals.Bullets = {}
 Globals.Rockets = {}
 Globals.Score = 0
@@ -11,9 +11,9 @@ Globals.playerHealth = 3
 GameState = {
     current = nil,
     state_paths = {
-        menu = "src/states/menu",
-        play = "src/states/play",
-        gameOver = "src/states/gameover"
+        menu = "src.states.menu",
+        play = "src.states.play",
+        gameOver = "src.states.gameOver"
     },
     loaded_states = {}
 }

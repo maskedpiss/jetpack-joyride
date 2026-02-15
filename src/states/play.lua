@@ -1,13 +1,13 @@
 local Play = {}
 
-Play.Collisions = require("src/utils/collisions")
+Play.Collisions = require("src.utils.collisions")
 
-local world = require("src/objs/gameworld")
-local hud = require("src/objs/hud")
-local Player = require("src/objs/player")
-local Zapper = require("src/objs/obstacles/zapper")
-local bullet = require("src/objs/bullet")
-local rocket = require("src/objs/obstacles/rocket")
+local world = require("src.objs.gameworld")
+local hud = require("src.objs.hud")
+local Player = require("src.objs.player")
+local Zapper = require("src.objs.obstacles.zapper")
+local bullet = require("src.objs.bullet")
+local rocket = require("src.objs.obstacles.rocket")
 
 local player = nil
 local zapper = nil
