@@ -42,6 +42,7 @@ function Zapper:reset()
 
   self.totalWidth = (self.Generator.width * 2) + self.Laser.width
   self.isPoweredOn = false
+  self.isDestroyed = false
   self.hasBeenHit = false
 end
 
@@ -70,6 +71,17 @@ function Zapper:update(dt)
 
   if self.Generator.health <= 0 then
   	self.isPoweredOn = false
+  	self.isDestroyed = true
+  end
+
+  if self.isPoweredOn and not self.isDestroyed then
+	self.currentFrame = 1
+  elseif not self.isPoweredOn and not self.isDestroyed then
+  	self.currentFrame = 2
+  end
+
+  if self.isDestroyed then
+	self.currentFrame = 3
   end
 end
 
