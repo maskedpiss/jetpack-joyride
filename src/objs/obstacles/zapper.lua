@@ -5,6 +5,7 @@ function Zapper.new()
   setmetatable(instance, { __index = Zapper })
   
   instance:reset()
+  instance:animate()
   
   return instance
 end
@@ -15,7 +16,7 @@ function Zapper:reset()
   	sprite = Globals.Graphics.Sprites.LaserGenerator,
   	x = Globals.Screen.width,
   	y = math.random(50, (Globals.Screen.height - 150)),
-  	width = Globals.Graphics.Sprites.LaserGenerator:getWidth(),
+  	width = 60,
   	height = Globals.Graphics.Sprites.LaserGenerator:getHeight(),
   	speed = 150,
   	health = 3
@@ -45,6 +46,15 @@ function Zapper:reset()
 end
 
 
+function Zapper:animate()
+  local frameWidth = 60
+  local frameHeight = frameWidth
+
+  self.GeneratorFrames = Globals.Animation:parseSpriteSheet(self.Generator.sprite, frameWidth, frameHeight)
+  self.currentFrame = 1
+end
+
+
 function Zapper:update(dt)
   self.Generator.x = self.Generator.x - self.Generator.speed * dt
   self.Laser.x = self.Laser.x - self.Generator.speed * dt
@@ -66,8 +76,8 @@ end
 
 function Zapper:draw()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(self.Generator.sprite, self.Generator.x, self.Generator.y)
-  love.graphics.draw(self.Generator.sprite, (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
+  love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], self.Generator.x, self.Generator.y)
+  love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
   
   love.graphics.setColor(1, 1, 1)
   if self.isPoweredOn then
