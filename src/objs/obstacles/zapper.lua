@@ -1,5 +1,8 @@
 local Zapper = {}
 
+local timer = 0
+local frameDuration = 0.1
+
 function Zapper.new()
   local instance = {}
   setmetatable(instance, { __index = Zapper })
@@ -30,7 +33,8 @@ function Zapper:reset()
   	x = self.Generator.x + self.Generator.width,
   	y = (self.Generator.y + (h / 2)) + 4,
   	ox = 0,
-  	oy = 0
+  	oy = 0,
+  	currentFrame = 1
   }
 
   self.genHitBox2 = {
@@ -78,6 +82,17 @@ function Zapper:update(dt)
   if self.Generator.health <= 0 then
   	self.isPoweredOn = false
   	self.isDestroyed = true
+  end
+
+  if self.isPoweredOn then
+    timer = timer + dt
+	if timer > frameDuration then
+		timer = 0
+		self.Laser.currentFrame = self.Laser.currentFrame + 1
+		if self.Laser.currentFrame > #self.LaserFrames then
+			self.Laser.currentFrame = 1
+		end
+	end
   end
 
   if self.isPoweredOn and not self.isDestroyed then
