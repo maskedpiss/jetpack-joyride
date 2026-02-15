@@ -46,7 +46,7 @@ function Zapper:update(dt)
 	self:reset()
   end
 
-  if self.Generator.x + self.totalWidth < Globals.Screen.width and self.Generator.health > 0 then
+  if self.Generator.x + self.totalWidth < Globals.Screen.width and self.Generator.health > 0 and not self.hasBeenHit then
   	self.isPoweredOn = true
   end
 

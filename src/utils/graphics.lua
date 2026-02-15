@@ -10,6 +10,8 @@ end
 
 
 function Graphics:loadSprites()
+  love.graphics.setDefaultFilter("nearest", "nearest")
+
   self.Sprites = {
       BG1 = love.graphics.newImage("res/sprites/BG1.png"),
       BG2 = love.graphics.newImage("res/sprites/BG2.png"),
