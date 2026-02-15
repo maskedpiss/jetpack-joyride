@@ -5,6 +5,7 @@ function Rocket.new()
   setmetatable(instance, { __index = Rocket })
   
   instance:reset()
+  instance:animate()
   
   return instance
 end
@@ -23,6 +24,15 @@ function Rocket:reset()
 end
 
 
+function Rocket:animate()
+  local frameWidth = 80
+  local frameHeight = 40
+
+  self.rocketFrames = Globals.Animation:parseSpriteSheet(self.sprite, frameWidth, frameHeight)
+  self.currentFrame = 1
+end
+
+
 function Rocket:update(dt)
   self.x = self.x - self.speed * dt
   
@@ -34,7 +44,7 @@ end
 
 function Rocket:draw()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(self.sprite, self.x, self.y)
+  love.graphics.draw(self.sprite, self.rocketFrames[self.currentFrame], self.x, self.y)
 end
 
 return Rocket
