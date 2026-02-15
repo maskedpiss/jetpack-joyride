@@ -32,6 +32,8 @@ function Zapper:reset()
   }
 
   self.totalWidth = (self.Generator.width * 2) + self.Laser.width
+  self.isPoweredOn = false
+  self.hasBeenHit = false
 end
 
 
@@ -42,6 +44,10 @@ function Zapper:update(dt)
   if self.Generator.x + self.totalWidth < Globals.Screen.x then
 	self:reset()
   end
+
+  if self.Generator.x + self.totalWidth < Globals.Screen.width and not self.hasBeenHit then
+  	self.isPoweredOn = true
+  end
 end
 
 
@@ -51,7 +57,9 @@ function Zapper:draw()
   love.graphics.draw(self.Generator.sprite, (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
   
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(self.Laser.sprite, self.Laser.x, self.Laser.y)
+  if self.isPoweredOn then
+  	love.graphics.draw(self.Laser.sprite, self.Laser.x, self.Laser.y)
+  end
 end
 
 return Zapper

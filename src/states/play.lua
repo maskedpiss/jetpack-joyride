@@ -58,8 +58,11 @@ function Play.update(dt)
   end
   
   if Play.Collisions:checkHitBox(player, zapper.Laser) then
-    Globals.playerHealth = Globals.playerHealth - 1
-    zapper:reset()
+    if zapper.isPoweredOn then
+    	Globals.playerHealth = Globals.playerHealth - 1
+    	zapper.hasBeenHit = true
+    	zapper.isPoweredOn = false
+    end
   end
   
   for i = #Globals.Rockets, 1, -1 do
