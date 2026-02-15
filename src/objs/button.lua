@@ -28,7 +28,12 @@ end
 
 
 function Button:update(dt)
-  
+  local mouseX, mouseY = love.mouse.getPosition()
+  if self:isHovering(mouseX, mouseY) then
+	self.currentFrame = 2
+  else
+  	self.currentFrame = 1
+  end
 end
 
 

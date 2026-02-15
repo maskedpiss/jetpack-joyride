@@ -36,6 +36,9 @@ function Menu.update(dt)
   if Menu.BG.x + Menu.BG.width < Globals.Screen.x then
     Menu.BG.x = Globals.Screen.x
   end
+
+  playButton:update(dt)
+  exitButton:update(dt)
 end
 
 
