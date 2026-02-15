@@ -53,6 +53,12 @@ function Zapper:animate()
 
   self.GeneratorFrames = Globals.Animation:parseSpriteSheet(self.Generator.sprite, frameWidth, frameHeight)
   self.currentFrame = 1
+
+  local laserFrameWidth = self.Laser.width
+  local laserFrameHeight = self.Laser.height
+
+  self.LaserFrames = Globals.Animation:parseSpriteSheet(self.Laser.sprite, laserFrameWidth, laserFrameHeight)
+  self.Laser.currentFrame = 1
 end
 
 
@@ -93,7 +99,7 @@ function Zapper:draw()
   
   love.graphics.setColor(1, 1, 1)
   if self.isPoweredOn then
-  	love.graphics.draw(self.Laser.sprite, self.Laser.x, self.Laser.y)
+  	love.graphics.draw(self.Laser.sprite, self.LaserFrames[self.Laser.currentFrame], self.Laser.x, self.Laser.y)
   end
 end
 
