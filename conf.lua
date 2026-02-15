@@ -6,4 +6,7 @@ function love.conf(t)
   t.window.height = 640
   t.window.vsync = 1
   t.window.resizable = false
+
+  t.modules.joystick = false
+  t.modules.touch = false
 end
