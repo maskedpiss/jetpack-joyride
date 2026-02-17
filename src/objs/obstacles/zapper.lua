@@ -3,6 +3,16 @@ local Zapper = {}
 local timer = 0
 local frameDuration = 0.1
 
+local states = {
+	OFF = "off",
+	TRANSITION = "transition",
+	ON = "on"
+}
+
+local currentState = states.OFF
+local animSpeed = 100
+local animDirection = -1
+
 function Zapper.new()
   local instance = {}
   setmetatable(instance, { __index = Zapper })
@@ -48,6 +58,7 @@ function Zapper:reset()
   self.isPoweredOn = false
   self.isDestroyed = false
   self.hasBeenHit = false
+  currentState = states.OFF
 end
 
 
@@ -75,19 +86,46 @@ function Zapper:update(dt)
 	self:reset()
   end
 
+  if currentState == states.OFF then
+  	self.Laser.currentFrame = 28
+  	animDirection = -1
+  elseif currentState == states.TRANSITION then
+  	self.Laser.currentFrame = self.Laser.currentFrame + (animSpeed * dt * animDirection)
+
+  	if animDirection == 1 and self.Laser.currentFrame >= #self.LaserFrames then
+  		currentState = states.OFF
+  	elseif animDirection == -1 and self.Laser.currentFrame <= 5 then
+  		currentState = states.ON
+  	end
+  elseif currentState == states.ON then
+  	animDirection = 1
+
+  	timer = timer + dt
+  	if timer >= frameDuration then
+		timer = 0
+		self.Laser.currentFrame = self.Laser.currentFrame + 1
+
+		if self.Laser.currentFrame > 4 then
+			self.Laser.currentFrame = 1
+		end
+  	end
+  end
+
   if self.Generator.x + self.totalWidth < Globals.Screen.width and self.Generator.health > 0 and not self.hasBeenHit then
   	self.isPoweredOn = true
+  	if currentState == states.OFF then
+		currentState = states.TRANSITION
+  	end
   end
 
   if self.Generator.health <= 0 then
   	self.isPoweredOn = false
   	self.isDestroyed = true
+  	currentState = states.TRANSITION
   end
 
-  if not self.isPoweredOn then
-	self.Laser.currentFrame = 28
-  else
-  	self.Laser.currentFrame = 1
+  if self.hasBeenHit then
+	currentState = states.TRANSITION
   end
 
   if self.isPoweredOn and not self.isDestroyed then
@@ -108,7 +146,9 @@ function Zapper:draw()
   love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
   
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(self.Laser.sprite, self.LaserFrames[self.Laser.currentFrame], self.Laser.x, self.Laser.y)
+  local frameIdx = math.floor(self.Laser.currentFrame)
+  frameIdx = math.max(1, math.min(frameIdx, #self.LaserFrames))
+  love.graphics.draw(self.Laser.sprite, self.LaserFrames[frameIdx], self.Laser.x, self.Laser.y)
 end
 
 return Zapper
