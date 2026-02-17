@@ -84,15 +84,10 @@ function Zapper:update(dt)
   	self.isDestroyed = true
   end
 
-  if self.isPoweredOn then
-    timer = timer + dt
-	if timer > frameDuration then
-		timer = 0
-		self.Laser.currentFrame = self.Laser.currentFrame + 1
-		if self.Laser.currentFrame > #self.LaserFrames then
-			self.Laser.currentFrame = 1
-		end
-	end
+  if not self.isPoweredOn then
+	self.Laser.currentFrame = 28
+  else
+  	self.Laser.currentFrame = 1
   end
 
   if self.isPoweredOn and not self.isDestroyed then
@@ -113,9 +108,7 @@ function Zapper:draw()
   love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
   
   love.graphics.setColor(1, 1, 1)
-  if self.isPoweredOn then
-  	love.graphics.draw(self.Laser.sprite, self.LaserFrames[self.Laser.currentFrame], self.Laser.x, self.Laser.y)
-  end
+  love.graphics.draw(self.Laser.sprite, self.LaserFrames[self.Laser.currentFrame], self.Laser.x, self.Laser.y)
 end
 
 return Zapper

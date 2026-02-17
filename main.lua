@@ -13,7 +13,7 @@ GameState = {
     state_paths = {
         menu = "src.states.menu",
         play = "src.states.play",
-        gameOver = "src.states.gameOver"
+        gameOver = "src.states.gameover"
     },
     loaded_states = {}
 }
@@ -79,4 +79,7 @@ function love.draw()
   if GameState.current and GameState.current.draw then
     GameState.current.draw()
   end
+
+  love.graphics.print(love.timer.getFPS())
+  print(love.graphics.getSystemLimits().texturesize)
 end
