@@ -80,6 +80,6 @@ function love.draw()
     GameState.current.draw()
   end
 
-  love.graphics.print(love.timer.getFPS())
-  print(love.graphics.getSystemLimits().texturesize)
+ -- love.graphics.print(love.timer.getFPS())
+ -- print(love.graphics.getSystemLimits().texturesize)
 end
