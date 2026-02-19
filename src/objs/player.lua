@@ -1,5 +1,8 @@
 local Player = {}
 
+local timer = 0
+local frameDuration = 0.1
+
 function Player.new(x, y)
   local instance = {}
   setmetatable(instance, { __index = Player })
@@ -48,9 +51,17 @@ function Player:update(dt)
   end
 
   if self.isGrounded then
-	self.currentFrame = 1
+	timer = timer + dt
+
+	if timer >= frameDuration then
+		timer = 0
+		self.currentFrame = self.currentFrame + 1
+		if self.currentFrame > 4 then
+			self.currentFrame = 1
+		end
+	end
   else
-  	self.currentFrame = 2
+  	self.currentFrame = 5
   end
 end
 
