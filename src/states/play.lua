@@ -39,6 +39,7 @@ function Play.update(dt)
   player:update(dt)
   bullet:update(dt)
   zapper:update(dt)
+  hud:update(dt)
   
   if Play.Collisions:genericAABB(player, world.Ground) then
     player.yVel = 0
