@@ -7,6 +7,7 @@ Globals.Score = 0
 Globals.scoreTimer = 0
 Globals.rocketSpawnTimer = 0
 Globals.playerHealth = 3
+Globals.maxPlayerHealth = 3
 
 GameState = {
     current = nil,
