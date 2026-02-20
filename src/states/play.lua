@@ -37,7 +37,6 @@ function Play.update(dt)
   
   world:update(dt)
   player:update(dt)
-  bullet:update(dt)
   zapper:update(dt)
   hud:update(dt)
   
@@ -51,6 +50,10 @@ function Play.update(dt)
   
   if love.mouse.isDown(1) then
     bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
+  end
+
+  for i, bullet in ipairs(Globals.Bullets) do
+	bullet:update(dt)
   end
   
   if Play.Collisions:checkHitBox(player, zapper.Laser) then
@@ -73,30 +76,38 @@ function Play.update(dt)
   for i = #Globals.Bullets, 1, -1 do
     local b = Globals.Bullets[i]
     local bulletRemoved = false
-    
+    local shouldRemove = b:update(dt)
+
+    if shouldRemove then
+		table.remove(Globals.Bullets, i)
+    end
+
     if Play.Collisions:genericAABB(b, world.Ground) then
-      table.remove(Globals.Bullets, i)
-      bulletRemoved = true
+		b:triggerHit()
     end
-    
-    if not bulletRemoved then
-      for j = #Globals.Rockets, 1, -1 do
-        local r = Globals.Rockets[j]
-        if Play.Collisions:genericAABB(b, r) then
-          r.health = r.health - 1
-          table.remove(Globals.Bullets, i)
-          if r.health <= 0 then
-            table.remove(Globals.Rockets, j)
-            Globals.rocketSpawnTimer = math.random(2, 5)
-          end
-          break
-        end
-      end
-      if Play.Collisions:genericAABB(b, zapper.Generator) or Play.Collisions:genericAABB(b, zapper.genHitBox2) then
-	  	zapper.Generator.health = zapper.Generator.health - 1
-	  	table.remove(Globals.Bullets, i)
-      end
-    end
+
+	if b.state ~= b.states.HIT then
+	    if Play.Collisions:genericAABB(b, zapper.Generator) or Play.Collisions:genericAABB(b, zapper.genHitBox2) then
+			b:triggerHit()
+			zapper.Generator.health = zapper.Generator.health - 1
+
+			if zapper.Generator.health <= 0 then
+				zapper.hasBeenHit = true
+			end
+	    end
+
+	    for j = #Globals.Rockets, 1, -1 do
+			local r = Globals.Rockets[j]
+			if Play.Collisions:checkHitBox(b, r) then
+				r.health = r.health - 1
+				b:triggerHit()
+
+				if r.health <= 0 then
+					table.remove(Globals.Rockets, j)
+				end
+			end
+	    end
+	end
   end
   
   if Globals.playerHealth <= 0 then
@@ -108,12 +119,15 @@ end
 function Play.draw()
   world:draw()
   player:draw()
-  bullet:draw()
   hud:draw()
   zapper:draw()
   
   for i, rocket in ipairs(Globals.Rockets) do
     rocket:draw()
+  end
+
+  for i, bullet in ipairs(Globals.Bullets) do
+	bullet:draw()
   end
 end
 

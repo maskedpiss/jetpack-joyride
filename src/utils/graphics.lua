@@ -22,6 +22,7 @@ function Graphics:loadSprites()
       Rocket = love.graphics.newImage("res/sprites/Rocket.png"),
       Heart = love.graphics.newImage("res/sprites/Heart.png"),
       Bullet = love.graphics.newImage("res/sprites/Bullet.png"),
+      BulletHit = love.graphics.newImage("res/sprites/Bullet-hit.png"),
       LaserGenerator = love.graphics.newImage("res/sprites/LaserGenerator.png"),
       LaserBeam = love.graphics.newImage("res/sprites/LaserBeam.png")
   }
