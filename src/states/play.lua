@@ -51,10 +51,6 @@ function Play.update(dt)
   if love.mouse.isDown(1) then
     bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
   end
-
-  for i, bullet in ipairs(Globals.Bullets) do
-	bullet:update(dt)
-  end
   
   if Play.Collisions:checkHitBox(player, zapper.Laser) then
     if zapper.isPoweredOn then
@@ -66,10 +62,17 @@ function Play.update(dt)
   
   for i = #Globals.Rockets, 1, -1 do
     local r = Globals.Rockets[i]
-    r:update(dt)
+    local shouldRemove = r:update(dt)
+
+    if shouldRemove then
+		table.remove(Globals.Rockets, i)
+		Globals.rocketSpawnTimer = math.random(2, 5)
+    end
+    
     if Play.Collisions:checkHitBox(player, r) then
       Globals.playerHealth = Globals.playerHealth - 1
       table.remove(Globals.Rockets, i)
+      Globals.rocketSpawnTimer = math.random(2, 5)
     end
   end
   
@@ -98,13 +101,10 @@ function Play.update(dt)
 
 	    for j = #Globals.Rockets, 1, -1 do
 			local r = Globals.Rockets[j]
+			
 			if Play.Collisions:checkHitBox(b, r) then
 				r.health = r.health - 1
 				b:triggerHit()
-
-				if r.health <= 0 then
-					table.remove(Globals.Rockets, j)
-				end
 			end
 	    end
 	end

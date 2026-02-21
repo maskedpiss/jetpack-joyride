@@ -5,7 +5,7 @@ Globals.Bullets = {}
 Globals.Rockets = {}
 Globals.Score = 0
 Globals.scoreTimer = 0
-Globals.rocketSpawnTimer = 0
+Globals.rocketSpawnTimer = nil
 Globals.playerHealth = 3
 Globals.maxPlayerHealth = 3
 
