@@ -24,35 +24,80 @@ function Zapper.new()
 end
 
 
-function Zapper:reset()
+function Zapper:reset(orientation)
+  self.orientation = orientation or (math.random() > 0.5 and "horizontal" or "vertical")
+
   self.Generator = {
   	sprite = Globals.Graphics.Sprites.LaserGenerator,
   	x = Globals.Screen.width,
-  	y = math.random(50, (Globals.Screen.height - 150)),
+  	y = 0,
   	width = 60,
-  	height = Globals.Graphics.Sprites.LaserGenerator:getHeight(),
+  	height = 60,
   	speed = 150,
   	health = 3
   }
 
-  local h = 25
-  self.Laser = {
-    sprite = Globals.Graphics.Sprites.LaserBeam,
-  	width = 200,
-  	height = h,
-  	x = self.Generator.x + self.Generator.width,
-  	y = (self.Generator.y + (h / 2)) + 4,
+  local beamLength = 200
+  local beamThick = 25
+
+  if self.orientation == "horizontal" then
+    self.Generator.y = math.random(50, (Globals.Screen.height - 150))
+  
+	self.Laser = {
+		sprite = Globals.Graphics.Sprites.LaserBeam,
+		width = beamLength,
+		height = beamThick,
+		x = self.Generator.x + self.Generator.width,
+		y = self.Generator.y + (self.Generator.height / 2) - (beamThick / 2),
+		ox = 0,
+		oy = 0,
+		angle = 0
+	}
+	
+	self.genHitBox2 = {
+		x = self.Laser.x + self.Laser.width,
+		y = self.Generator.y,
+		width = self.Generator.width,
+		height = self.Generator.height
+	}
+  else
+    self.Generator.y = math.random(50, 290)
+    
+  	self.Laser = {
+  		sprite = Globals.Graphics.Sprites.LaserBeam,
+  		width = beamLength,
+  		height = beamThick,
+  		x = self.Generator.x + (self.Generator.width / 2) + (beamThick / 2),
+  		y = self.Generator.y + self.Generator.height,
+  		ox = 0,
+  		oy = 0,
+  		angle = math.pi / 2
+  	}
+  	
+  	self.genHitBox2 = {
+  		x = self.Generator.x,
+  		y = self.Laser.y + self.Laser.width,
+  		width = self.Generator.width,
+  		height = self.Generator.height
+  	}
+  end
+
+  self.HitBox = {
+  	x = 0,
+  	y = 0,
   	ox = 0,
   	oy = 0,
-  	currentFrame = 1
+  	width = 0,
+  	height = 0
   }
 
-  self.genHitBox2 = {
-  	x = self.Laser.x + self.Laser.width,
-  	y = self.Generator.y,
-  	width = self.Generator.width,
-  	height = self.Generator.height
-  }
+  if self.orientation == "horizontal" then
+	self.HitBox.width = self.Laser.width
+	self.HitBox.height = self.Laser.height
+  else
+  	self.HitBox.width = self.Laser.height
+  	self.HitBox.height = self.Laser.width
+  end
 
   self.totalWidth = (self.Generator.width * 2) + self.Laser.width
   self.isPoweredOn = false
@@ -81,6 +126,9 @@ function Zapper:update(dt)
   self.Generator.x = self.Generator.x - self.Generator.speed * dt
   self.Laser.x = self.Laser.x - self.Generator.speed * dt
   self.genHitBox2.x = self.genHitBox2.x - self.Generator.speed * dt
+
+  self.HitBox.x = self.Laser.x
+  self.HitBox.y = self.Laser.y
 
   if self.Generator.x + self.totalWidth < Globals.Screen.x then
 	self:reset()
@@ -143,12 +191,16 @@ end
 function Zapper:draw()
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], self.Generator.x, self.Generator.y)
-  love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
+
+  if self.orientation == "horizontal" then  
+  	love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
+  else
+  	love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], self.Generator.x, (self.Generator.y + self.Generator.width) + self.Laser.width)	
+  end
   
-  love.graphics.setColor(1, 1, 1)
   local frameIdx = math.floor(self.Laser.currentFrame)
   frameIdx = math.max(1, math.min(frameIdx, #self.LaserFrames))
-  love.graphics.draw(self.Laser.sprite, self.LaserFrames[frameIdx], self.Laser.x, self.Laser.y)
+  love.graphics.draw(self.Laser.sprite, self.LaserFrames[frameIdx], self.Laser.x, self.Laser.y, self.Laser.angle, 1, 1, 0, 0)
 end
 
 return Zapper

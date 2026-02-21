@@ -52,7 +52,7 @@ function Play.update(dt)
     bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
   end
   
-  if Play.Collisions:checkHitBox(player, zapper.Laser) then
+  if Play.Collisions:checkHitBox(player, zapper.HitBox) then
     if zapper.isPoweredOn then
     	Globals.playerHealth = Globals.playerHealth - 1
     	zapper.hasBeenHit = true
