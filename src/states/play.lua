@@ -16,7 +16,7 @@ function Play.onEnter()
   world:load()
   hud:load()
   
-  player = Player.new(150, Globals.Screen.height / 2)
+  player = Player.new(250, Globals.Screen.height / 2)
   zapper = Zapper.new()
   
   Globals.rocketSpawnTimer = math.random(2, 5)
