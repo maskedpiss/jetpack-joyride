@@ -65,7 +65,7 @@ function Rocket:update(dt)
 		end
 	end
   elseif self.state == self.states.EXPLODING then
-  	local newFrameDuration = 0.01
+  	local newFrameDuration = 0.015
   	timer = timer + dt
   	if timer >= newFrameDuration then
 		timer = 0
