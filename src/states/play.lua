@@ -68,11 +68,12 @@ function Play.update(dt)
 		table.remove(Globals.Rockets, i)
 		Globals.rocketSpawnTimer = math.random(2, 5)
     end
-    
-    if Play.Collisions:checkHitBox(player, r) then
-      Globals.playerHealth = Globals.playerHealth - 1
-      table.remove(Globals.Rockets, i)
-      Globals.rocketSpawnTimer = math.random(2, 5)
+
+    if r.state ~= r.states.EXPLODING then
+    	if Play.Collisions:checkHitBox(player, r) then
+      		Globals.playerHealth = Globals.playerHealth - 1
+      		r.state = r.states.EXPLODING
+    	end
     end
   end
   

@@ -10,7 +10,6 @@ function Bullet.new(x, y)
   self.hitSheet = Globals.Graphics.Sprites.BulletHit
 
   self.hitFrames = Globals.Animation:parseSpriteSheet(self.hitSheet, 30, 10)
-  print(#self.hitFrames)
 
   self.states = {
   	MOVING = "moving",

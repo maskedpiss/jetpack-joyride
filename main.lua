@@ -80,7 +80,4 @@ function love.draw()
   if GameState.current and GameState.current.draw then
     GameState.current.draw()
   end
-
- -- love.graphics.print(love.timer.getFPS())
- -- print(love.graphics.getSystemLimits().texturesize)
 end
