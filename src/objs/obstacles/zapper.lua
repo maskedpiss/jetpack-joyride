@@ -159,11 +159,20 @@ function Zapper:update(dt)
   	end
   end
 
-  if self.Generator.x + self.totalWidth < Globals.Screen.width and self.Generator.health > 0 and not self.hasBeenHit then
-  	self.isPoweredOn = true
-  	if currentState == states.OFF then
-		currentState = states.TRANSITION
+  if self.orientation == "horizontal" then
+  	if self.Generator.x + self.totalWidth < Globals.Screen.width and self.Generator.health > 0 and not self.hasBeenHit then
+  		self.isPoweredOn = true
+  		if currentState == states.OFF then
+			currentState = states.TRANSITION
+  		end
   	end
+  else
+	if self.Generator.x + self.Generator.width < Globals.Screen.width and self.Generator.health > 0 and not self.hasBeenHit then
+		self.isPoweredOn = true
+		if currentState == states.OFF then
+			currentState = states.TRANSITION
+		end
+	end
   end
 
   if self.Generator.health <= 0 then
