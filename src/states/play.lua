@@ -69,6 +69,10 @@ function Play.update(dt)
 		Globals.rocketSpawnTimer = math.random(2, 5)
     end
 
+    if r.state == r.states.HOMING then
+		r.indicator.y = player.y
+    end
+
     if r.state ~= r.states.EXPLODING then
     	if Play.Collisions:checkHitBox(player, r) then
       		Globals.playerHealth = Globals.playerHealth - 1
