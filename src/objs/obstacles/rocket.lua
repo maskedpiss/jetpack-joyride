@@ -43,9 +43,15 @@ end
 
 
 function Rocket:animate()
+  local indWidth = 30
+  local indHeight = 30
+
+  self.indicatorFrames = Globals.Animation:parseSpriteSheet(self.indicator.sprite, indWidth, indHeight)
+  self.currentIndFrame = 1
+
   local frameWidth = 80
   local frameHeight = 40
-
+  
   self.rocketFrames = Globals.Animation:parseSpriteSheet(self.sprite, frameWidth, frameHeight)
   self.currentFrame = 1
   self.explodeFrame = 29
@@ -58,6 +64,16 @@ function Rocket:update(dt)
   	if self.homingTimer <= 0 then
   		self.y = self.indicator.y
 		self.state = self.states.FLYING
+  	end
+
+  	timer = timer + dt
+  	if timer >= frameDuration then
+		timer = 0
+		self.currentIndFrame = self.currentIndFrame + 1
+
+		if self.currentIndFrame > #self.indicatorFrames then
+			self.currentIndFrame = 1
+		end
   	end
   elseif self.state == self.states.FLYING then
 	if self.x + self.width < Globals.Screen.x then
@@ -100,7 +116,7 @@ end
 function Rocket:draw()
   if self.state == self.states.HOMING then
   	love.graphics.setColor(1, 1, 1)
-  	love.graphics.draw(self.indicator.sprite, self.indicator.x, self.indicator.y)
+  	love.graphics.draw(self.indicator.sprite, self.indicatorFrames[self.currentIndFrame], self.indicator.x, self.indicator.y)
   elseif self.state == self.states.FLYING then
     love.graphics.setColor(1, 1, 1)
   	love.graphics.draw(self.sprite, self.rocketFrames[self.currentFrame], self.x, self.y)
