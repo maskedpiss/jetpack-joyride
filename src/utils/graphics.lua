@@ -20,6 +20,7 @@ function Graphics:loadSprites()
       Button = love.graphics.newImage("res/sprites/Button.png"),
       Player = love.graphics.newImage("res/sprites/Player.png"),
       Rocket = love.graphics.newImage("res/sprites/Rocket.png"),
+      RocketIndicator = love.graphics.newImage("res/sprites/RocketIndicator.png"),
       Heart = love.graphics.newImage("res/sprites/Heart.png"),
       Bullet = love.graphics.newImage("res/sprites/Bullet.png"),
       BulletHit = love.graphics.newImage("res/sprites/Bullet-hit.png"),

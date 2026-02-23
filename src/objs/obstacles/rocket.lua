@@ -26,10 +26,9 @@ function Rocket:reset()
   self.health = 2
 
   self.indicator = {
+  	sprite = Globals.Graphics.Sprites.RocketIndicator,
   	x = Globals.Screen.width - 100,
-  	y = 0,
-  	width = 20,
-  	height = 20
+  	y = 0
   }
 
   self.states = {
@@ -100,8 +99,8 @@ end
 
 function Rocket:draw()
   if self.state == self.states.HOMING then
-  	love.graphics.setColor(1, 0, 0)
-  	love.graphics.rectangle("fill", self.indicator.x, self.indicator.y, self.indicator.width, self.indicator.height)
+  	love.graphics.setColor(1, 1, 1)
+  	love.graphics.draw(self.indicator.sprite, self.indicator.x, self.indicator.y)
   elseif self.state == self.states.FLYING then
     love.graphics.setColor(1, 1, 1)
   	love.graphics.draw(self.sprite, self.rocketFrames[self.currentFrame], self.x, self.y)
