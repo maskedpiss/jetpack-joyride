@@ -130,8 +130,14 @@ function Zapper:update(dt)
   self.HitBox.x = self.Laser.x
   self.HitBox.y = self.Laser.y
 
-  if self.Generator.x + self.totalWidth < Globals.Screen.x then
-	self:reset()
+  if self.orientation == "horizontal" then
+	if self.Generator.x + self.totalWidth < Globals.Screen.x then
+		self:reset()
+	end
+  else
+  	if self.Generator.x + self.Generator.width < Globals.Screen.x then
+		self:reset()
+  	end
   end
 
   if currentState == states.OFF then
