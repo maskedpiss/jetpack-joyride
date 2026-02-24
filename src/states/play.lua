@@ -5,7 +5,7 @@ Play.Collisions = require("src.utils.collisions")
 local world = require("src.objs.gameworld")
 local hud = require("src.objs.hud")
 local Player = require("src.objs.player")
-local ZapperManager = require("src.utils.zappermanager")
+local Zapper = require("src.objs.obstacles.zapper")
 local bullet = require("src.objs.bullet")
 local rocket = require("src.objs.obstacles.rocket")
 
@@ -17,7 +17,7 @@ function Play.onEnter()
   hud:load()
   
   player = Player.new(250, Globals.Screen.height / 2)
-  ZapperManager:load()
+  zapper = Zapper.new()
   
   Globals.rocketSpawnTimer = math.random(2, 5)
 end
@@ -37,7 +37,7 @@ function Play.update(dt)
   
   world:update(dt)
   player:update(dt)
-  ZapperManager:update(dt)
+  zapper:update(dt)
   hud:update(dt)
   
   if Play.Collisions:genericAABB(player, world.Ground) then
@@ -52,14 +52,12 @@ function Play.update(dt)
     bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
   end
   
-  for _, z in ipairs(ZapperManager.pool) do
-	if z.isPoweredOn and not z.hasBeenHit then
-		if Play.Collisions:checkHitBox(player, z.Laser) then
-			Globals.playerHealth = Globals.playerHealth - 1
-			z.hasBeenHit = true
-			z.isPoweredOn = false
-		end
-	end
+  if Play.Collisions:checkHitBox(player, zapper.HitBox) then
+    if zapper.isPoweredOn then
+    	Globals.playerHealth = Globals.playerHealth - 1
+    	zapper.hasBeenHit = true
+    	zapper.isPoweredOn = false
+    end
   end
   
   for i = #Globals.Rockets, 1, -1 do
@@ -97,15 +95,13 @@ function Play.update(dt)
     end
 
 	if b.state ~= b.states.HIT then
-		for _, z in pairs(ZapperManager.pool) do
-	    	if Play.Collisions:genericAABB(b, z.Generator) or Play.Collisions:genericAABB(b, z.genHitBox2) then
-				b:triggerHit()
-				z.Generator.health = z.Generator.health - 1
+	    if Play.Collisions:genericAABB(b, zapper.Generator) or Play.Collisions:genericAABB(b, zapper.genHitBox2) then
+			b:triggerHit()
+			zapper.Generator.health = zapper.Generator.health - 1
 
-				if z.Generator.health <= 0 then
-					z.hasBeenHit = true
-				end
-	    	end
+			if zapper.Generator.health <= 0 then
+				zapper.hasBeenHit = true
+			end
 	    end
 
 	    for j = #Globals.Rockets, 1, -1 do
@@ -129,7 +125,7 @@ function Play.draw()
   world:draw()
   player:draw()
   hud:draw()
-  ZapperManager:draw()
+  zapper:draw()
   
   for i, rocket in ipairs(Globals.Rockets) do
     rocket:draw()
