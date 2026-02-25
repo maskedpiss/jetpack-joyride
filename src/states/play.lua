@@ -52,12 +52,11 @@ function Play.update(dt)
     bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
   end
   
-  if Play.Collisions:checkHitBox(player, zapper.HitBox) then
-    if zapper.isPoweredOn then
-    	Globals.playerHealth = Globals.playerHealth - 1
-    	zapper.hasBeenHit = true
-    	zapper.isPoweredOn = false
-    end
+  if zapper:checkCollision(player) then
+	if not zapper.hasHitPlayer then
+		Globals.playerHealth = Globals.playerHealth - 1
+		zapper.hasHitPlayer = true
+	end
   end
   
   for i = #Globals.Rockets, 1, -1 do
@@ -95,13 +94,8 @@ function Play.update(dt)
     end
 
 	if b.state ~= b.states.HIT then
-	    if Play.Collisions:genericAABB(b, zapper.Generator) or Play.Collisions:genericAABB(b, zapper.genHitBox2) then
+	    if zapper:checkBulletCollision(b) then
 			b:triggerHit()
-			zapper.Generator.health = zapper.Generator.health - 1
-
-			if zapper.Generator.health <= 0 then
-				zapper.hasBeenHit = true
-			end
 	    end
 
 	    for j = #Globals.Rockets, 1, -1 do

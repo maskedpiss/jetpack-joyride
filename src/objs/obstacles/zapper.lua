@@ -1,21 +1,17 @@
 local Zapper = {}
 
-local timer = 0
-local frameDuration = 0.1
-
-local states = {
-	OFF = "off",
-	TRANSITION = "transition",
-	ON = "on"
-}
-
-local currentState = states.OFF
-local animSpeed = 100
-local animDirection = -1
-
 function Zapper.new()
   local instance = {}
   setmetatable(instance, { __index = Zapper })
+
+  instance.generatorSprite = Globals.Graphics.Sprites.LaserGenerator
+  instance.laserSprite = Globals.Graphics.Sprites.LaserBeam
+
+  instance.currentState = "off"
+  instance.timer = 0
+  instance.frameDuration = 0.1
+  instance.animDirection = -1
+  instance.currentFrame = 1
   
   instance:reset()
   instance:animate()
@@ -25,85 +21,54 @@ end
 
 
 function Zapper:reset(orientation)
+  self.states = {
+  	OFF = "off",
+  	TRANSITION = "transition",
+  	ON = "on"
+  }
+
   self.orientation = orientation or (math.random() > 0.5 and "horizontal" or "vertical")
+  self.x = Globals.Screen.width + 100
 
-  self.Generator = {
-  	sprite = Globals.Graphics.Sprites.LaserGenerator,
-  	x = Globals.Screen.width,
-  	y = 0,
-  	width = 60,
-  	height = 60,
-  	speed = 150,
-  	health = 3
-  }
+  local padding = 50
+  local totalHeight = (self.orientation == "vertical") and 320 or 60
+  self.y = math.random(padding, Globals.Screen.height - totalHeight - padding)
 
-  local beamLength = 200
-  local beamThick = 25
+  self.currentState = self.states.OFF
 
-  if self.orientation == "horizontal" then
-    self.Generator.y = math.random(50, (Globals.Screen.height - 150))
-  
-	self.Laser = {
-		sprite = Globals.Graphics.Sprites.LaserBeam,
-		width = beamLength,
-		height = beamThick,
-		x = self.Generator.x + self.Generator.width,
-		y = self.Generator.y + (self.Generator.height / 2) - (beamThick / 2),
-		ox = 0,
-		oy = 0,
-		angle = 0
-	}
-	
-	self.genHitBox2 = {
-		x = self.Laser.x + self.Laser.width,
-		y = self.Generator.y,
-		width = self.Generator.width,
-		height = self.Generator.height
-	}
-  else
-    self.Generator.y = math.random(50, 290)
-    
-  	self.Laser = {
-  		sprite = Globals.Graphics.Sprites.LaserBeam,
-  		width = beamLength,
-  		height = beamThick,
-  		x = self.Generator.x + (self.Generator.width / 2) + (beamThick / 2),
-  		y = self.Generator.y + self.Generator.height,
-  		ox = 0,
-  		oy = 0,
-  		angle = math.pi / 2
-  	}
-  	
-  	self.genHitBox2 = {
-  		x = self.Generator.x,
-  		y = self.Laser.y + self.Laser.width,
-  		width = self.Generator.width,
-  		height = self.Generator.height
-  	}
-  end
+  self.genSize = 60
+  self.beamLength = 200
+  self.beamThick = 25
+  self.speed = 150
 
-  self.HitBox = {
-  	x = 0,
-  	y = 0,
-  	ox = 0,
-  	oy = 0,
-  	width = 0,
-  	height = 0
-  }
+  self.health = 3
 
-  if self.orientation == "horizontal" then
-	self.HitBox.width = self.Laser.width
-	self.HitBox.height = self.Laser.height
-  else
-  	self.HitBox.width = self.Laser.height
-  	self.HitBox.height = self.Laser.width
-  end
-
-  self.totalWidth = (self.Generator.width * 2) + self.Laser.width
+  self.animSpeed = 100
+  self.currentFrame = 1
+  self.laserFrame = 1
   self.isPoweredOn = false
+  self.hasHitPlayer = false
   self.isDestroyed = false
-  self.hasBeenHit = false
-  currentState = states.OFF
+
+  if self.orientation == "horizontal" then
+	self.hitBoxOffset = {
+		x = self.genSize,
+		y = (self.genSize / 2) - (self.beamThick / 2)
+	}
+	self.hitBoxDim = {
+		w = self.beamLength,
+		h = self.beamThick
+	}
+  else
+	self.hitBoxOffset = {
+		x = (self.genSize / 2) - (self.beamThick / 2),
+		y = self.genSize
+	}
+	self.hitBoxDim = {
+		w = self.beamThick,
+		h = self.beamLength
+	}
+  end
 end
 
 
@@ -111,111 +76,170 @@ function Zapper:animate()
   local frameWidth = 60
   local frameHeight = frameWidth
 
-  self.GeneratorFrames = Globals.Animation:parseSpriteSheet(self.Generator.sprite, frameWidth, frameHeight)
+  self.GeneratorFrames = Globals.Animation:parseSpriteSheet(self.generatorSprite, frameWidth, frameHeight)
   self.currentFrame = 1
 
-  local laserFrameWidth = self.Laser.width
-  local laserFrameHeight = self.Laser.height
+  local laserFrameWidth = 200
+  local laserFrameHeight = 25
 
-  self.LaserFrames = Globals.Animation:parseSpriteSheet(self.Laser.sprite, laserFrameWidth, laserFrameHeight)
-  self.Laser.currentFrame = 1
+  self.LaserFrames = Globals.Animation:parseSpriteSheet(self.laserSprite, laserFrameWidth, laserFrameHeight)
+end
+
+
+function Zapper:checkCollision(player)
+	if self.currentState ~= "on" or self.hasHitPlayer then
+		return false
+	end
+
+	local bx = self.x + self.hitBoxOffset.x
+	local by = self.y + self.hitBoxOffset.y
+	local bw = self.hitBoxDim.w
+	local bh = self.hitBoxDim.h
+
+	return player.x < bx + bw and
+		   bx < player.x + player.width and
+		   player.y < by + bh and
+		   by < player.y + player.height
+end
+
+
+function Zapper:getGeneratorHitboxes()
+	local gen1 = {
+		x = self.x,
+		y = self.y,
+		w = self.genSize,
+		h = self.genSize
+	}
+	local gen2
+
+	if self.orientation == "horizontal" then
+		gen2 = {
+			x = self.x + self.genSize + self.beamLength,
+			y = self.y,
+			w = self.genSize,
+			h = self.genSize
+		}
+	else
+		gen2 = {
+			x = self.x,
+			y = self.y + self.genSize + self.beamLength,
+			w = self.genSize,
+			h = self.genSize
+		}
+	end
+
+	return gen1, gen2
+end
+
+
+function Zapper:checkBulletCollision(bullet)
+	if self.isDestroyed then
+		return false
+	end
+
+	local g1, g2 = self:getGeneratorHitboxes()
+	local targets = {
+		g1,
+		g2
+	}
+
+	for _, box in ipairs(targets) do
+		if bullet.x < box.x + box.w and
+		   box.x < bullet.x + bullet.width and
+		   bullet.y < box.y + box.h and
+		   box.y < bullet.y + bullet.height then
+
+			self:takeDamage(1)
+			return true
+		end
+	end
+	return false
+end
+
+
+function Zapper:takeDamage(amount)
+	self.health = self.health - amount
+
+	if self.health <= 0 and not self.isDestroyed then
+		self.isDestroyed = true
+		self.hasHitPlayer = true
+		self.currentFrame = 3
+	end
 end
 
 
 function Zapper:update(dt)
-  self.Generator.x = self.Generator.x - self.Generator.speed * dt
-  self.Laser.x = self.Laser.x - self.Generator.speed * dt
-  self.genHitBox2.x = self.genHitBox2.x - self.Generator.speed * dt
+  self.x = self.x - self.speed * dt
 
-  self.HitBox.x = self.Laser.x
-  self.HitBox.y = self.Laser.y
-
-  if self.orientation == "horizontal" then
-	if self.Generator.x + self.totalWidth < Globals.Screen.x then
-		self:reset()
-	end
-  else
-  	if self.Generator.x + self.Generator.width < Globals.Screen.x then
-		self:reset()
-  	end
-  end
-
-  if currentState == states.OFF then
-  	self.Laser.currentFrame = 28
-  	animDirection = -1
-  elseif currentState == states.TRANSITION then
-  	self.Laser.currentFrame = self.Laser.currentFrame + (animSpeed * dt * animDirection)
-
-  	if animDirection == 1 and self.Laser.currentFrame >= #self.LaserFrames then
-  		currentState = states.OFF
-  	elseif animDirection == -1 and self.Laser.currentFrame <= 5 then
-  		currentState = states.ON
-  	end
-  elseif currentState == states.ON then
-  	animDirection = 1
-
-  	timer = timer + dt
-  	if timer >= frameDuration then
-		timer = 0
-		self.Laser.currentFrame = self.Laser.currentFrame + 1
-
-		if self.Laser.currentFrame > 4 then
-			self.Laser.currentFrame = 1
-		end
-  	end
-  end
-
-  if self.orientation == "horizontal" then
-  	if self.Generator.x + self.totalWidth < Globals.Screen.width and self.Generator.health > 0 and not self.hasBeenHit then
-  		self.isPoweredOn = true
-  		if currentState == states.OFF then
-			currentState = states.TRANSITION
-  		end
-  	end
-  else
-	if self.Generator.x + self.Generator.width < Globals.Screen.width and self.Generator.health > 0 and not self.hasBeenHit then
-		self.isPoweredOn = true
-		if currentState == states.OFF then
-			currentState = states.TRANSITION
-		end
-	end
-  end
-
-  if self.Generator.health <= 0 then
-  	self.isPoweredOn = false
-  	self.isDestroyed = true
-  	currentState = states.TRANSITION
-  end
-
-  if self.hasBeenHit then
-	currentState = states.TRANSITION
-  end
-
-  if self.isPoweredOn and not self.isDestroyed then
-	self.currentFrame = 1
-  elseif not self.isPoweredOn and not self.isDestroyed then
-  	self.currentFrame = 2
+  if self.hasHitPlayer and self.currentState == self.states.ON then
+	self.currentState = self.states.TRANSITION
+	self.animDirection = 1
   end
 
   if self.isDestroyed then
 	self.currentFrame = 3
+  elseif self.isPoweredOn then
+	self.currentFrame = 1
+  else
+	self.currentFrame = 2
+  end
+
+  if self.currentState == self.states.OFF then
+  	self.laserFrame = 28
+  	self.animDirection = -1
+  	self.isPoweredOn = false
+  elseif self.currentState == self.states.TRANSITION then
+    self.isPoweredOn = false
+  	self.laserFrame = self.laserFrame + (self.animSpeed * dt * self.animDirection)
+
+  	if self.animDirection == 1 and self.laserFrame >= #self.LaserFrames then
+  		self.currentState = self.states.OFF
+  	elseif self.animDirection == -1 and self.laserFrame <= 5 then
+  		self.currentState = self.states.ON
+  	end
+  elseif self.currentState == self.states.ON and not self.hasHitPlayer then
+  	self.isPoweredOn = true
+  	self.animDirection = 1
+
+  	self.timer = self.timer + dt
+  	if self.timer >= self.frameDuration then
+		self.timer = 0
+		self.laserFrame = self.laserFrame + 1
+
+		if self.laserFrame > 4 then
+			self.laserFrame = 1
+		end
+  	end
+  end
+
+  local fullWidth = (self.orientation == "horizontal") and (self.genSize * 2 + self.beamLength) or self.genSize
+
+  if self.x + fullWidth < Globals.Screen.width and self.currentState == self.states.OFF and not self.hasHitPlayer then
+	self.currentState = self.states.TRANSITION
+	self.animDirection = -1
+	self.laserFrame = 28
+  end
+  
+  if self.x + fullWidth < 0 then
+	self:reset()
   end
 end
 
 
 function Zapper:draw()
   love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], self.Generator.x, self.Generator.y)
 
-  if self.orientation == "horizontal" then  
-  	love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], (self.Generator.x + self.Generator.width) + self.Laser.width, self.Generator.y)
+  local gx, gy = self.x, self.y
+
+  if self.orientation == "horizontal" then
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx, gy)
+	love.graphics.draw(self.laserSprite, self.LaserFrames[math.floor(self.laserFrame)], gx + self.genSize, gy + (self.genSize / 2), 0, 1, 1, 0, self.beamThick / 2)
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx + self.genSize + self.beamLength, gy)
   else
-  	love.graphics.draw(self.Generator.sprite, self.GeneratorFrames[self.currentFrame], self.Generator.x, (self.Generator.y + self.Generator.width) + self.Laser.width)	
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx, gy)
+	love.graphics.draw(self.laserSprite, self.LaserFrames[math.floor(self.laserFrame)], gx + (self.genSize / 2), gy + self.genSize, math.pi / 2, 1, 1, 0, self.beamThick / 2)
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx, gy + self.genSize + self.beamLength)
   end
-  
-  local frameIdx = math.floor(self.Laser.currentFrame)
-  frameIdx = math.max(1, math.min(frameIdx, #self.LaserFrames))
-  love.graphics.draw(self.Laser.sprite, self.LaserFrames[frameIdx], self.Laser.x, self.Laser.y, self.Laser.angle, 1, 1, 0, 0)
 end
 
 return Zapper
