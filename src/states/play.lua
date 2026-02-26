@@ -5,7 +5,7 @@ Play.Collisions = require("src.utils.collisions")
 local world = require("src.objs.gameworld")
 local hud = require("src.objs.hud")
 local Player = require("src.objs.player")
-local Zapper = require("src.objs.obstacles.zapper")
+local ZapperManager = require("src.utils.zappermanager")
 local bullet = require("src.objs.bullet")
 local rocket = require("src.objs.obstacles.rocket")
 
@@ -17,7 +17,7 @@ function Play.onEnter()
   hud:load()
   
   player = Player.new(250, Globals.Screen.height / 2)
-  zapper = Zapper.new()
+  ZapperManager:load()
   
   Globals.rocketSpawnTimer = math.random(2, 5)
 end
@@ -37,7 +37,7 @@ function Play.update(dt)
   
   world:update(dt)
   player:update(dt)
-  zapper:update(dt)
+  ZapperManager:update(dt, player, Globals.Bullets)
   hud:update(dt)
   
   if Play.Collisions:genericAABB(player, world.Ground) then
@@ -50,13 +50,6 @@ function Play.update(dt)
   
   if love.mouse.isDown(1) then
     bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
-  end
-  
-  if zapper:checkCollision(player) then
-	if not zapper.hasHitPlayer then
-		Globals.playerHealth = Globals.playerHealth - 1
-		zapper.hasHitPlayer = true
-	end
   end
   
   for i = #Globals.Rockets, 1, -1 do
@@ -94,10 +87,6 @@ function Play.update(dt)
     end
 
 	if b.state ~= b.states.HIT then
-	    if zapper:checkBulletCollision(b) then
-			b:triggerHit()
-	    end
-
 	    for j = #Globals.Rockets, 1, -1 do
 			local r = Globals.Rockets[j]
 			
@@ -119,7 +108,7 @@ function Play.draw()
   world:draw()
   player:draw()
   hud:draw()
-  zapper:draw()
+  ZapperManager:draw()
   
   for i, rocket in ipairs(Globals.Rockets) do
     rocket:draw()
