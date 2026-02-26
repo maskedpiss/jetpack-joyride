@@ -23,7 +23,7 @@ function Rocket:reset()
   self.width = 64
   self.height = 16
   self.speed = math.random(400, 500)
-  self.health = 2
+  self.health = 1
 
   self.indicator = {
   	sprite = Globals.Graphics.Sprites.RocketIndicator,
