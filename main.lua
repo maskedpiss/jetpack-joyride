@@ -13,6 +13,7 @@ GameState = {
     current = nil,
     state_paths = {
         menu = "src.states.menu",
+        options = "src.states.options",
         play = "src.states.play",
         gameOver = "src.states.gameover"
     },
