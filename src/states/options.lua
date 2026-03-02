@@ -1,7 +1,11 @@
 local Options = {}
 
-function Options.onEnter()
+local vsyncToggle = nil
+local backButton = nil
 
+function Options.onEnter()
+  Options.BG = {}
+  Options.Title = {}
 end
 
 

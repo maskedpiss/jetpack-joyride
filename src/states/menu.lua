@@ -2,6 +2,7 @@ local Menu = {}
 
 local Buttons = require("src.objs.button")
 local playButton = nil
+local menuButton = nil
 local exitButton = nil
 
 function Menu.onEnter()
@@ -23,8 +24,12 @@ function Menu.onEnter()
   playButton = Buttons.new("Play", Globals.Screen.width / 2, Globals.Screen.height / 2, function()
       GameState:changeState("play")
     end)
+
+  menuButton = Buttons.new("Options", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100, function()
+  	  GameState:changeState("options")
+  	end)
   
-  exitButton = Buttons.new("Exit", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100, function()
+  exitButton = Buttons.new("Exit", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 200, function()
       love.event.quit()
     end)
 end
@@ -38,6 +43,7 @@ function Menu.update(dt)
   end
 
   playButton:update(dt)
+  menuButton:update(dt)
   exitButton:update(dt)
 end
 
@@ -45,6 +51,10 @@ end
 function Menu.mousepressed(x, y, button)
   if playButton:mousepressed(x, y, button) then
     return
+  end
+
+  if menuButton:mousepressed(x, y, button) then
+	return
   end
   
   if exitButton:mousepressed(x, y, button) then
@@ -55,6 +65,10 @@ end
 
 function Menu.mousereleased(x, y, button)
   if playButton:mousereleased(x, y, button) then
+	return
+  end
+
+  if menuButton:mousereleased(x, y, button) then
 	return
   end
 
@@ -77,6 +91,7 @@ function Menu.draw()
   love.graphics.printf(Menu.Title.text, Menu.Title.x, Menu.Title.y, Globals.Screen.width, "center")
   
   playButton:draw()
+  menuButton:draw()
   exitButton:draw()
 end
 
@@ -86,6 +101,7 @@ function Menu.onExit()
   Menu.Title = {}
   Buttons = nil
   playButton = nil
+  menuButton = nil
   exitButton = nil
 end
 
