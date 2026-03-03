@@ -13,7 +13,11 @@ function Options.onEnter()
   	speed = 50
   }
   
-  Options.Title = {}
+  Options.Title = {
+  	text = "[OPTIONS]",
+  	x = Globals.Screen.x,
+  	y = 50
+  }
 end
 
 
@@ -32,6 +36,10 @@ function Options.draw()
   love.graphics.draw(Options.BG.sprite, Options.BG.x + Options.BG.width, Options.BG.y)
 
   love.graphics.draw(Globals.Graphics.Sprites.BG2, Globals.Screen.x, Globals.Screen.y)
+
+  love.graphics.setColor(0, 0, 0)
+  love.graphics.setFont(Globals.Graphics.Fonts.TitleFont)
+  love.graphics.printf(Options.Title.text, Options.Title.x, Options.Title.y, Globals.Screen.width, "center")
 end
 
 
