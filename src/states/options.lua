@@ -20,7 +20,7 @@ function Options.onEnter()
   	y = 50
   }
 
-  backButton = Buttons.new("Back", Globals.Screen.width / 2, Globals.Screen.height / 2, function()
+  backButton = Buttons.new("Back", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100, function()
   	  GameState:changeState("menu")
     end)
 end
@@ -61,6 +61,9 @@ function Options.draw()
   love.graphics.setColor(0, 0, 0)
   love.graphics.setFont(Globals.Graphics.Fonts.TitleFont)
   love.graphics.printf(Options.Title.text, Options.Title.x, Options.Title.y, Globals.Screen.width, "center")
+
+  love.graphics.setFont(Globals.Graphics.Fonts.ButtonFont)
+  love.graphics.printf("VSync: ", Globals.Screen.x, Globals.Screen.height / 2, Globals.Screen.width, "center")
 
   love.graphics.setColor(1, 1, 1)
   backButton:draw()
