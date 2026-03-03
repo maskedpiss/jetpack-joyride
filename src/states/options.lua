@@ -1,5 +1,6 @@
 local Options = {}
 
+local Buttons = require("src.objs.button")
 local vsyncToggle = nil
 local backButton = nil
 
@@ -18,6 +19,10 @@ function Options.onEnter()
   	x = Globals.Screen.x,
   	y = 50
   }
+
+  backButton = Buttons.new("Back", Globals.Screen.width / 2, Globals.Screen.height / 2, function()
+  	  GameState:changeState("menu")
+    end)
 end
 
 
@@ -26,6 +31,22 @@ function Options.update(dt)
 
   if Options.BG.x + Options.BG.width < Globals.Screen.x then
 	Options.BG.x = Globals.Screen.x
+  end
+
+  backButton:update(dt)
+end
+
+
+function Options.mousepressed(x, y, button)
+  if backButton:mousepressed(x, y, button) then
+	return
+  end
+end
+
+
+function Options.mousereleased(x, y, button)
+  if backButton:mousereleased(x, y, button) then
+	return
   end
 end
 
@@ -40,6 +61,9 @@ function Options.draw()
   love.graphics.setColor(0, 0, 0)
   love.graphics.setFont(Globals.Graphics.Fonts.TitleFont)
   love.graphics.printf(Options.Title.text, Options.Title.x, Options.Title.y, Globals.Screen.width, "center")
+
+  love.graphics.setColor(1, 1, 1)
+  backButton:draw()
 end
 
 
