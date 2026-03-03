@@ -30,6 +30,8 @@ function Options.draw()
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(Options.BG.sprite, Options.BG.x, Options.BG.y)
   love.graphics.draw(Options.BG.sprite, Options.BG.x + Options.BG.width, Options.BG.y)
+
+  love.graphics.draw(Globals.Graphics.Sprites.BG2, Globals.Screen.x, Globals.Screen.y)
 end
 
 
