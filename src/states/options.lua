@@ -18,13 +18,18 @@ end
 
 
 function Options.update(dt)
+  Options.BG.x = Options.BG.x - Options.BG.speed * dt
 
+  if Options.BG.x + Options.BG.width < Globals.Screen.x then
+	Options.BG.x = Globals.Screen.x
+  end
 end
 
 
 function Options.draw()
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(Options.BG.sprite, Options.BG.x, Options.BG.y)
+  love.graphics.draw(Options.BG.sprite, Options.BG.x + Options.BG.width, Options.BG.y)
 end
 
 
