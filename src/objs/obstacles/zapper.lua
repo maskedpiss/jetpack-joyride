@@ -192,6 +192,12 @@ function Zapper:update(dt)
     self.isPoweredOn = false
   	self.laserFrame = self.laserFrame + (self.animSpeed * dt * self.animDirection)
 
+  	if self.laserFrame > #self.LaserFrames then
+		self.laserFrame = #self.LaserFrames
+  	elseif self.laserFrame < 1 then
+		self.laserFrame = 1
+  	end
+
   	if self.animDirection == 1 and self.laserFrame >= #self.LaserFrames then
   		self.currentState = self.states.OFF
   	elseif self.animDirection == -1 and self.laserFrame <= 5 then
@@ -230,7 +236,17 @@ function Zapper:draw()
   love.graphics.setColor(1, 1, 1)
 
   local gx, gy = self.x, self.y
+  local rawFrame = self.laserFrame or 1
+  local frameIdx = math.floor(rawFrame)
+  
+  frameIdx = math.max(1, math.min(frameIdx, #self.LaserFrames))
 
+  local quad = self.LaserFrames[frameIdx]
+
+  if not quad then
+	return
+  end
+  
   if self.orientation == "horizontal" then
 	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx, gy)
 	love.graphics.draw(self.laserSprite, self.LaserFrames[math.floor(self.laserFrame)], gx + self.genSize, gy + (self.genSize / 2), 0, 1, 1, 0, self.beamThick / 2)
