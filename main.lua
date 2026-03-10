@@ -60,6 +60,13 @@ function love.update(dt)
   if GameState.current and GameState.current.update then
     GameState.current.update(dt)
   end
+
+  local _, _, flags = love.window.getMode()
+  if flags.vsync == 1 then
+	print("VSync!")
+  elseif flags.vsync == 0 then
+	print("No Sync!")
+  end
 end
 
 

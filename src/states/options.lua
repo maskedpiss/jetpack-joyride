@@ -1,6 +1,7 @@
 local Options = {}
 
 local Buttons = require("src.objs.button")
+local Toggles = require("src.objs.toggle")
 local vsyncToggle = nil
 local backButton = nil
 
@@ -20,6 +21,16 @@ function Options.onEnter()
   	y = 50
   }
 
+  vsyncToggle = Toggles.new(function()
+  	if not vsyncToggle.isToggled then
+		vsyncToggle.isToggled = true
+		love.window.setVSync(true)
+  	else
+		vsyncToggle.isToggled = false
+		love.window.setVSync(false)
+  	end
+  end)
+
   backButton = Buttons.new("Back", Globals.Screen.width / 2, (Globals.Screen.height / 2) + 100, function()
   	  GameState:changeState("menu")
     end)
@@ -33,12 +44,17 @@ function Options.update(dt)
 	Options.BG.x = Globals.Screen.x
   end
 
+  vsyncToggle:update(dt)
   backButton:update(dt)
 end
 
 
 function Options.mousepressed(x, y, button)
   if backButton:mousepressed(x, y, button) then
+	return
+  end
+
+  if vsyncToggle:mousepressed(x, y, button) then
 	return
   end
 end
@@ -64,6 +80,8 @@ function Options.draw()
 
   love.graphics.setFont(Globals.Graphics.Fonts.ButtonFont)
   love.graphics.printf("VSync: ", Globals.Screen.x, Globals.Screen.height / 2, Globals.Screen.width, "center")
+
+  vsyncToggle:draw()
 
   love.graphics.setColor(1, 1, 1)
   backButton:draw()
