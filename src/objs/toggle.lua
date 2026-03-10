@@ -14,7 +14,18 @@ function Toggle.new(callback)
 	instance.isToggled = false
 	instance.callback = callback or function() end
 
+	instance:animate()
+
 	return instance
+end
+
+
+function Toggle:animate()
+	local frameWidth = self.width
+	local frameHeight = self.height
+
+	self.toggleFrames = Globals.Animation:parseSpriteSheet(self.sprite, frameWidth, frameHeight)
+	self.currentFrame = 1
 end
 
 
@@ -45,7 +56,7 @@ end
 
 function Toggle:draw()
 	love.graphics.setColor(1, 1, 1)
-	love.graphics.draw(self.sprite, self.x, self.y)
+	love.graphics.draw(self.sprite, self.toggleFrames[self.currentFrame], self.x, self.y)
 end
 
 return Toggle
