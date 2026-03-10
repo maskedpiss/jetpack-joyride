@@ -36,6 +36,12 @@ function Toggle:update(dt)
 	elseif flags.vsync == 0 then
 		self.isToggled = false
 	end
+
+	if self.isToggled then
+		self.currentFrame = 2
+	else
+		self.currentFrame = 1
+	end
 end
 
 
