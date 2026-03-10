@@ -5,8 +5,8 @@ local frameDuration = 0.1
 
 function HUD:load()
   self.Score = {
-      x = Globals.Screen.x,
-      y = 50
+      x = 50,
+      y = 20
   }
 
   self.states = {
@@ -76,7 +76,7 @@ end
 function HUD:draw()
   love.graphics.setColor(0, 0, 0)
   love.graphics.setFont(Globals.Graphics.Fonts.ScoreFont)
-  love.graphics.printf(Globals.Score.."m", self.Score.x, self.Score.y, Globals.Screen.width, "center")
+  love.graphics.printf(Globals.Score.."m", self.Score.x, self.Score.y, Globals.Screen.width)
   
   love.graphics.setColor(1, 1, 1)
   for i = 1, Globals.maxPlayerHealth do

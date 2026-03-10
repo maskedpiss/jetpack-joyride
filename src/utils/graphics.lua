@@ -4,7 +4,7 @@ function Graphics:loadFonts()
   self.Fonts = {
       TitleFont = love.graphics.newFont("res/fonts/Carton.ttf", 72),
       ButtonFont = love.graphics.newFont("res/fonts/upheavtt.ttf", 32),
-      ScoreFont = love.graphics.newFont("res/fonts/ari-w9500-bold.ttf", 64)
+      ScoreFont = love.graphics.newFont("res/fonts/ari-w9500-bold.ttf", 32)
   }
 end
 
