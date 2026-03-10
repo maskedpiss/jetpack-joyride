@@ -6,6 +6,7 @@ function Toggle.new(callback)
 	local instance = {}
 	setmetatable(instance, { __index = Toggle })
 
+	instance.sprite = Globals.Graphics.Sprites.Toggle
 	instance.x = (Globals.Screen.width / 2) + 75
 	instance.y = (Globals.Screen.height / 2) + 10
 	instance.width = 50
@@ -18,12 +19,6 @@ end
 
 
 function Toggle:update(dt)
-	if self.isToggled then
-		color = { 0, 1, 0 }
-	else
-		color = { 1, 1, 1 }
-	end
-
 	local _, _, flags = love.window.getMode()
 	if flags.vsync == 1 then
 		self.isToggled = true
@@ -49,8 +44,8 @@ end
 
 
 function Toggle:draw()
-	love.graphics.setColor(color)
-	love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+	love.graphics.setColor(1, 1, 1)
+	love.graphics.draw(self.sprite, self.x, self.y)
 end
 
 return Toggle
