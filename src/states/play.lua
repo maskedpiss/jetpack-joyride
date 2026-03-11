@@ -99,7 +99,7 @@ function Play.update(dt)
   end
   
   if Globals.playerHealth <= 0 then
-    --GameState:changeState("gameOver")
+    GameState:changeState("gameOver")
   end
 end
 

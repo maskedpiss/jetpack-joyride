@@ -32,7 +32,7 @@ function Zapper:reset(orientation)
 
   local padding = 50
   local totalHeight = (self.orientation == "vertical") and 320 or 60
-  self.y = math.random(padding, Globals.Screen.height - totalHeight - padding)
+  self.y = math.random(padding, Globals.Screen.height - totalHeight - padding - 25)
 
   self.currentState = self.states.OFF
 
