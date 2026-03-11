@@ -20,6 +20,17 @@ function ZapperManager:load()
 end
 
 
+function ZapperManager:resetDifficulty()
+	self.elapsedTime = 0
+	self.currentSpeed = self.baseSpeed
+
+	for _, z in ipairs(self.pool) do
+		z:reset()
+		z.speed = self.baseSpeed
+	end
+end
+
+
 function ZapperManager:update(dt, player, bullets)
 	local max_x = 0
 	local gapReduction = math.min(150, self.elapsedTime * 0.1)
@@ -27,6 +38,7 @@ function ZapperManager:update(dt, player, bullets)
 
 	self.elapsedTime = self.elapsedTime + dt
 	self.currentSpeed = math.min(self.maxSpeed, self.baseSpeed + (self.elapsedTime * self.difficultyScale))
+	print(self.currentSpeed)
 
 	for _, z in ipairs(self.pool) do
 		z.speed = self.currentSpeed

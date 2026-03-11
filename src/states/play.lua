@@ -125,6 +125,7 @@ function Play.onExit()
   Globals.Rockets = {}
   player = nil
   zapper = nil
+  ZapperManager:resetDifficulty()
 end
 
 return Play
