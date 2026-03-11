@@ -5,9 +5,9 @@ ZapperManager.pool = {}
 ZapperManager.poolSize = 4
 ZapperManager.spawnDistance = 450
 ZapperManager.elapsedTime = 0
-ZapperManager.difficultyScale = 0.05
+ZapperManager.difficultyScale = 1.01
 ZapperManager.baseSpeed = 150
-ZapperManager.maxSpeed = 600
+ZapperManager.maxSpeed = 375
 ZapperManager.currentSpeed = 150
 
 function ZapperManager:load()
@@ -37,7 +37,9 @@ function ZapperManager:update(dt, player, bullets)
 	local currentMinDistance = self.spawnDistance - gapReduction
 
 	self.elapsedTime = self.elapsedTime + dt
-	self.currentSpeed = math.min(self.maxSpeed, self.baseSpeed + (self.elapsedTime * self.difficultyScale))
+
+	local rawSpeed = self.baseSpeed * (self.difficultyScale ^ self.elapsedTime)
+	self.currentSpeed = math.min(self.maxSpeed, rawSpeed)
 	print(self.currentSpeed)
 
 	for _, z in ipairs(self.pool) do
