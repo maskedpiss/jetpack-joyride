@@ -40,7 +40,6 @@ function ZapperManager:update(dt, player, bullets)
 
 	local rawSpeed = self.baseSpeed * (self.difficultyScale ^ self.elapsedTime)
 	self.currentSpeed = math.min(self.maxSpeed, rawSpeed)
-	print(self.currentSpeed)
 
 	for _, z in ipairs(self.pool) do
 		z.speed = self.currentSpeed
