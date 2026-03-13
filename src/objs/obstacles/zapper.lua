@@ -177,7 +177,10 @@ function Zapper:update(dt)
   end
 
   if self.isDestroyed then
-	self.currentFrame = 3
+	self.currentFrame = self.currentFrame + (self.animSpeed * dt)
+	if self.currentFrame >= #self.GeneratorFrames then
+		self.currentFrame = #self.GeneratorFrames
+	end
   elseif self.isPoweredOn then
 	self.currentFrame = 1
   else
@@ -237,24 +240,28 @@ function Zapper:draw()
 
   local gx, gy = self.x, self.y
   local rawFrame = self.laserFrame or 1
+  local rawGenFrame = self.currentFrame or 1
   local frameIdx = math.floor(rawFrame)
+  local genFrameIdx = math.floor(rawGenFrame)
   
   frameIdx = math.max(1, math.min(frameIdx, #self.LaserFrames))
+  genFrameIdx = math.max(1, math.min(genFrameIdx, #self.GeneratorFrames))
 
   local quad = self.LaserFrames[frameIdx]
+  local genQuad = self.GeneratorFrames[genFrameIdx]
 
-  if not quad then
+  if not quad or not genQuad then
 	return
   end
   
   if self.orientation == "horizontal" then
-	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx, gy)
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[math.floor(self.currentFrame)], gx, gy)
 	love.graphics.draw(self.laserSprite, self.LaserFrames[math.floor(self.laserFrame)], gx + self.genSize, gy + (self.genSize / 2), 0, 1, 1, 0, self.beamThick / 2)
-	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx + self.genSize + self.beamLength, gy)
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[math.floor(self.currentFrame)], gx + self.genSize + self.beamLength, gy)
   else
-	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx, gy)
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[math.floor(self.currentFrame)], gx, gy)
 	love.graphics.draw(self.laserSprite, self.LaserFrames[math.floor(self.laserFrame)], gx + (self.genSize / 2), gy + self.genSize, math.pi / 2, 1, 1, 0, self.beamThick / 2)
-	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[self.currentFrame], gx, gy + self.genSize + self.beamLength)
+	love.graphics.draw(self.generatorSprite, self.GeneratorFrames[math.floor(self.currentFrame)], gx, gy + self.genSize + self.beamLength)
   end
 end
 
