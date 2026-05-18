@@ -1,6 +1,7 @@
 local Play = {}
 
 Play.Collisions = require("src.utils.collisions")
+Play.distanceBuffer = nil
 
 local world = require("src.objs.gameworld")
 local hud = require("src.objs.hud")
@@ -15,6 +16,8 @@ local zapper = nil
 function Play.onEnter()
   world:load()
   hud:load()
+
+  Play.distanceBuffer = 0.0
   
   player = Player.new((Globals.Screen.width / 2) - 30, Globals.Screen.height / 2)
   ZapperManager:load()
@@ -24,10 +27,10 @@ end
 
 
 function Play.update(dt)
-  Globals.scoreTimer = Globals.scoreTimer + dt
-  if Globals.scoreTimer >= 1 then
-    Globals.Score = Globals.Score + 5
-    Globals.scoreTimer = 0
+  Play.distanceBuffer = Play.distanceBuffer + dt
+  while Play.distanceBuffer >= 0.2 do
+	Globals.Score = Globals.Score + 1
+	Play.distanceBuffer = Play.distanceBuffer - 0.2
   end
   
   Globals.rocketSpawnTimer = Globals.rocketSpawnTimer - dt
