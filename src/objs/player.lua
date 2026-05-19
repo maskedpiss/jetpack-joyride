@@ -19,6 +19,9 @@ function Player.new(x, y)
   instance.terminalVelocity = 800
   instance.yVel = 0
   instance.isGrounded = false
+  instance.isInvincible = false
+  instance.invincibleTimer = 0
+  instance.invincibleDuration = 1.0
 
   instance:animate()
 
@@ -63,12 +66,30 @@ function Player:update(dt)
   else
   	self.currentFrame = 5
   end
+
+  if self.isInvincible then
+	self.invincibleTimer = self.invincibleTimer - dt
+	if self.invincibleTimer <= 0 then
+		self.isInvincible = false
+		self.invincibleTimer = 0
+	end
+  end
 end
 
 
 function Player:draw()
-  love.graphics.setColor(1, 1, 1)
+  if self.isInvincible then
+	if math.fmod(self.invincibleTimer, 0.2) > 0.1 then
+		love.graphics.setColor(1, 1, 1, 0.3)
+	else
+		love.graphics.setColor(1, 1, 1, 1)
+	end
+  else
+	love.graphics.setColor(1, 1, 1, 1)
+  end
+  
   love.graphics.draw(self.sprite, self.playerFrames[self.currentFrame], self.x, self.y)
+  love.graphics.setColor(1, 1, 1, 1)
 end
 
 return Player

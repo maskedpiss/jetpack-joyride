@@ -69,9 +69,12 @@ function Play.update(dt)
     end
 
     if r.state ~= r.states.EXPLODING then
-    	if Play.Collisions:checkHitBox(player, r) then
+    	if Play.Collisions:checkHitBox(player, r) and not player.isInvincible then
       		Globals.playerHealth = Globals.playerHealth - 1
       		r.state = r.states.EXPLODING
+
+      		player.isInvincible = true
+      		player.invincibleTimer = player.invincibleDuration
     	end
     end
   end

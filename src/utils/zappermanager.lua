@@ -45,10 +45,14 @@ function ZapperManager:update(dt, player, bullets)
 		z.speed = self.currentSpeed
 		z:update(dt)
 
-		if z:checkCollision(player) then
-			if not z.hasHitPlayer then
-				Globals.playerHealth = Globals.playerHealth - 1
-				z.hasHitPlayer = true
+		if not player.isInvincible then
+			if z:checkCollision(player) then
+				if not z.hasHitPlayer then
+					Globals.playerHealth = Globals.playerHealth - 1
+					z.hasHitPlayer = true
+					player.isInvincible = true
+					player.invincibleTimer = player.invincibleDuration
+				end
 			end
 		end
 
