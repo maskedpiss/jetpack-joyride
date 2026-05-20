@@ -31,6 +31,8 @@ end
 
 
 function GameOver.update(dt)
+  local mouseX, mouseY = love.mouse.getPosition()
+
   GameOver.BG.x = GameOver.BG.x - GameOver.BG.speed * dt
   if GameOver.BG.x + GameOver.BG.width < Globals.Screen.x then
     GameOver.BG.x = Globals.Screen.x
@@ -38,6 +40,14 @@ function GameOver.update(dt)
 
   retryButton:update(dt)
   exitButton:update(dt)
+
+  if retryButton:isHovering(mouseX, mouseY) or exitButton:isHovering(mouseX, mouseY) then
+	if not Globals.hasPlayed then
+		Globals.Sound:playSound(Globals.Sound.SFX.Hover)
+	end
+  else
+	Globals.hasPlayed = false
+  end
 end
 
 

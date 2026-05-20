@@ -36,6 +36,8 @@ end
 
 
 function Menu.update(dt)
+  local mouseX, mouseY = love.mouse.getPosition()
+
   Menu.BG.x = Menu.BG.x - Menu.BG.speed * dt
   
   if Menu.BG.x + Menu.BG.width < Globals.Screen.x then
@@ -45,6 +47,14 @@ function Menu.update(dt)
   playButton:update(dt)
   menuButton:update(dt)
   exitButton:update(dt)
+
+  if playButton:isHovering(mouseX, mouseY) or menuButton:isHovering(mouseX, mouseY) or exitButton:isHovering(mouseX, mouseY) then
+	if not Globals.hasPlayed then
+		Globals.Sound:playSound(Globals.Sound.SFX.Hover)
+	end
+  else
+	Globals.hasPlayed = false
+  end
 end
 
 

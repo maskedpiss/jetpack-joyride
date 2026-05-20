@@ -1,6 +1,8 @@
 Globals = {}
 Globals.Graphics = require("src.utils.graphics")
 Globals.Animation = require("src.utils.animation")
+Globals.Sound = require("src.utils.sound")
+Globals.hasPlayed = false
 Globals.Bullets = {}
 Globals.Rockets = {}
 Globals.Score = 0
@@ -49,6 +51,7 @@ function love.load()
   
   Globals.Graphics:loadFonts()
   Globals.Graphics:loadSprites()
+  Globals.Sound:loadSFX()
   
   GameState:changeState("menu")
 end

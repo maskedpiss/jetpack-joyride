@@ -38,6 +38,8 @@ end
 
 
 function Options.update(dt)
+  local mouseX, mouseY = love.mouse.getPosition()
+
   Options.BG.x = Options.BG.x - Options.BG.speed * dt
 
   if Options.BG.x + Options.BG.width < Globals.Screen.x then
@@ -46,6 +48,14 @@ function Options.update(dt)
 
   vsyncToggle:update(dt)
   backButton:update(dt)
+
+  if backButton:isHovering(mouseX, mouseY) then
+	if not Globals.hasPlayed then
+		Globals.Sound:playSound(Globals.Sound.SFX.Hover)
+	end
+  else
+	Globals.hasPlayed = false
+  end
 end
 
 
