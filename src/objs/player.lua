@@ -22,6 +22,7 @@ function Player.new(x, y)
   instance.isInvincible = false
   instance.invincibleTimer = 0
   instance.invincibleDuration = 1.0
+  instance.isAlive = true
 
   instance:animate()
 
@@ -34,51 +35,72 @@ function Player:animate()
   local frameHeight = 60
 
   self.playerFrames = Globals.Animation:parseSpriteSheet(self.sprite, frameWidth, frameHeight)
-  self.currentFrame = 1
+
+  if self.isAlive then
+  	self.currentFrame = 1
+  else
+  	self.currentFrame = 61
+  end
 end
 
 
 function Player:update(dt)
-  if love.mouse.isDown(1) then
-    self.yVel = self.yVel - self.thrust * dt
-  else
-    self.yVel = self.yVel + self.gravity * dt
-  end
-  
-  self.yVel = math.max(-self.terminalVelocity, math.min(self.yVel, self.terminalVelocity))
-  self.y = self.y + self.yVel * dt
-  
-  if self.y + self.oy  < Globals.Screen.y then
-    self.yVel = 0
-    self.y = Globals.Screen.y - self.oy
-  end
+  if self.isAlive then
+	  if love.mouse.isDown(1) then
+	    self.yVel = self.yVel - self.thrust * dt
+	  else
+	    self.yVel = self.yVel + self.gravity * dt
+	  end
+	  
+	  self.yVel = math.max(-self.terminalVelocity, math.min(self.yVel, self.terminalVelocity))
+	  self.y = self.y + self.yVel * dt
+	  
+	  if self.y + self.oy  < Globals.Screen.y then
+	    self.yVel = 0
+	    self.y = Globals.Screen.y - self.oy
+	  end
 
-  if self.isGrounded then
-	timer = timer + dt
+	  if self.isGrounded then
+		timer = timer + dt
 
-	if timer >= frameDuration then
-		timer = 0
-		self.currentFrame = self.currentFrame + 1
-		if self.currentFrame > 4 then
-			self.currentFrame = 1
+		if timer >= frameDuration then
+			timer = 0
+			self.currentFrame = self.currentFrame + 1
+			if self.currentFrame > 4 then
+				self.currentFrame = 1
+			end
 		end
-	end
-  else
-  	self.currentFrame = 5
-  end
+	  else
+	  	self.currentFrame = 31
+	  end
 
-  if self.isInvincible then
-	self.invincibleTimer = self.invincibleTimer - dt
-	if self.invincibleTimer <= 0 then
-		self.isInvincible = false
-		self.invincibleTimer = 0
-	end
+	  if self.isInvincible then
+		self.invincibleTimer = self.invincibleTimer - dt
+		if self.invincibleTimer <= 0 then
+			self.isInvincible = false
+			self.invincibleTimer = 0
+		end
+	  end
+  else
+  	timer = timer + dt
+
+  	local deathFrameDuration = 0.03
+
+  	if timer >= deathFrameDuration then
+  		timer = 0
+		self.currentFrame = self.currentFrame + 1
+		if self.currentFrame > #self.playerFrames then
+			GameState:changeState("gameOver")
+		end
+  	end
   end
 end
 
 
 function Player:draw()
-  if self.isInvincible then
+  if not self.isAlive then
+	love.graphics.setColor(1, 1, 1, 1)
+  elseif self.isInvincible then
 	if math.fmod(self.invincibleTimer, 0.2) > 0.1 then
 		love.graphics.setColor(1, 1, 1, 0.3)
 	else

@@ -27,85 +27,90 @@ end
 
 
 function Play.update(dt)
-  Play.distanceBuffer = Play.distanceBuffer + dt
-  while Play.distanceBuffer >= 0.2 do
-	Globals.Score = Globals.Score + 1
-	Play.distanceBuffer = Play.distanceBuffer - 0.2
-  end
-  
-  Globals.rocketSpawnTimer = Globals.rocketSpawnTimer - dt
-  if Globals.rocketSpawnTimer <= 0 and #Globals.Rockets == 0 then
-    table.insert(Globals.Rockets, rocket.new())
-  end
-  
-  world:update(dt)
-  player:update(dt)
-  ZapperManager:update(dt, player, Globals.Bullets)
-  hud:update(dt)
-  
-  if Play.Collisions:genericAABB(player, world.Ground) then
-    player.yVel = 0
-    player.y = world.Ground.y - player.height
-    player.isGrounded = true
-  else
-  	player.isGrounded = false
-  end
-  
-  if love.mouse.isDown(1) then
-    bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
-  end
-  
-  for i = #Globals.Rockets, 1, -1 do
-    local r = Globals.Rockets[i]
-    local shouldRemove = r:update(dt)
-
-    if shouldRemove then
-		table.remove(Globals.Rockets, i)
-		Globals.rocketSpawnTimer = math.random(2, 5)
-    end
-
-    if r.state == r.states.HOMING then
-		r.indicator.y = player.y
-    end
-
-    if r.state ~= r.states.EXPLODING then
-    	if Play.Collisions:checkHitBox(player, r) and not player.isInvincible then
-      		Globals.playerHealth = Globals.playerHealth - 1
-      		r.state = r.states.EXPLODING
-
-      		player.isInvincible = true
-      		player.invincibleTimer = player.invincibleDuration
-    	end
-    end
-  end
-  
-  for i = #Globals.Bullets, 1, -1 do
-    local b = Globals.Bullets[i]
-    local bulletRemoved = false
-    local shouldRemove = b:update(dt)
-
-    if shouldRemove then
-		table.remove(Globals.Bullets, i)
-    end
-
-    if Play.Collisions:genericAABB(b, world.Ground) then
-		b:triggerHit()
-    end
-
-	if b.state ~= b.states.HIT then
-	    for j = #Globals.Rockets, 1, -1 do
-			local r = Globals.Rockets[j]
-			
-			if Play.Collisions:checkHitBox(b, r) then
-				r.health = r.health - 1
-				b:triggerHit()
-			end
-	    end
+  if player.isAlive then
+	Play.distanceBuffer = Play.distanceBuffer + dt
+	while Play.distanceBuffer >= 0.2 do
+		Globals.Score = Globals.Score + 1
+		Play.distanceBuffer = Play.distanceBuffer - 0.2
 	end
-  end
   
-  if Globals.playerHealth <= 0 then
-    GameState:changeState("gameOver")
+  	Globals.rocketSpawnTimer = Globals.rocketSpawnTimer - dt
+  	if Globals.rocketSpawnTimer <= 0 and #Globals.Rockets == 0 then
+    	table.insert(Globals.Rockets, rocket.new())
+  	end
+  
+  	world:update(dt)
+  	ZapperManager:update(dt, player, Globals.Bullets)
+  
+  	if Play.Collisions:genericAABB(player, world.Ground) then
+    	player.yVel = 0
+    	player.y = world.Ground.y - player.height
+    	player.isGrounded = true
+  	else
+  		player.isGrounded = false
+  	end
+  
+  	if love.mouse.isDown(1) then
+    	bullet:shoot(player.x + player.width - 2, player.y + player.height + 12, dt)
+  	end
+  
+  	for i = #Globals.Bullets, 1, -1 do
+    	local b = Globals.Bullets[i]
+    	local bulletRemoved = false
+    	local shouldRemove = b:update(dt)
+
+    	if shouldRemove then
+			table.remove(Globals.Bullets, i)
+    	end
+
+    	if Play.Collisions:genericAABB(b, world.Ground) then
+			b:triggerHit()
+    	end
+
+		if b.state ~= b.states.HIT then
+	    	for j = #Globals.Rockets, 1, -1 do
+				local r = Globals.Rockets[j]
+			
+				if Play.Collisions:checkHitBox(b, r) then
+					r.health = r.health - 1
+					b:triggerHit()
+				end
+	    	end
+		end
+  	end
+  
+  	if Globals.playerHealth <= 0 then
+    	player.isAlive = false
+    	player.currentFrame = 61
+    	player.frameDuration = 0.025
+  	end
+  end
+
+  hud:update(dt)
+  player:update(dt)
+
+  for i = #Globals.Rockets, 1, -1 do
+      local r = Globals.Rockets[i]
+      local shouldRemove = r:update(dt)
+  
+      if shouldRemove then
+  		table.remove(Globals.Rockets, i)
+  		Globals.rocketSpawnTimer = math.random(2, 5)
+      end
+  
+      if r.state == r.states.HOMING then
+  		r.indicator.y = player.y
+      end
+  
+      if r.state ~= r.states.EXPLODING then
+      	if Play.Collisions:checkHitBox(player, r) and not player.isInvincible then
+        		Globals.playerHealth = Globals.playerHealth - 1
+        		r.state = r.states.EXPLODING
+  
+        		player.isInvincible = true
+        		player.invincibleTimer = player.invincibleDuration
+      	end
+      end
   end
 end
 
