@@ -82,7 +82,6 @@ function Play.update(dt)
   	if Globals.playerHealth <= 0 then
     	player.isAlive = false
     	player.currentFrame = 61
-    	player.frameDuration = 0.025
   	end
   end
 

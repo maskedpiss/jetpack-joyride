@@ -96,10 +96,13 @@ function Zapper:checkCollision(player)
 	local bw = self.hitBoxDim.w
 	local bh = self.hitBoxDim.h
 
-	return player.x < bx + bw and
-		   bx < player.x + player.width and
-		   player.y < by + bh and
-		   by < player.y + player.height
+	local px = player.x + player.ox
+	local py = player.y + player.oy
+
+	return px < bx + bw and
+		   bx < px + player.width and
+		   py < by + bh and
+		   by < py + player.height
 end
 
 

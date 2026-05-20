@@ -11,7 +11,7 @@ function Player.new(x, y)
   instance.x = x
   instance.y = y
   instance.ox = 6
-  instance.oy = 12
+  instance.oy = 13
   instance.width = 18
   instance.height = 48
   instance.gravity = 1500
