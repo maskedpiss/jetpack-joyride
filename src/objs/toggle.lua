@@ -53,6 +53,7 @@ end
 
 function Toggle:mousepressed(x, y, button)
 	if self:isHovering(x, y) and button == 1 then
+		Globals.Sound:playSound(Globals.Sound.SFX.Switch)
 		self:callback()
 		return true
 	end
