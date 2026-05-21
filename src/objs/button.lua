@@ -51,6 +51,7 @@ end
 
 function Button:mousepressed(x, y, button)
   if self:isHovering(x, y) and button == 1 then
+    Globals.Sound:playSound(Globals.Sound.SFX.ButtonClick1)
     return true
   end
   return false
@@ -59,6 +60,7 @@ end
 
 function Button:mousereleased(x, y, button)
   if self:isHovering(x, y) and button == 1 then
+    Globals.Sound:playSound(Globals.Sound.SFX.ButtonClick2)
 	self:callback()
 	return true
   end
