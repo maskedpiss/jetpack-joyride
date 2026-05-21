@@ -5,8 +5,11 @@ function Sound:loadSFX()
 		Hover = love.audio.newSource("res/sound/ui-game-big-selection-01.wav", "static"),
 		ButtonClick1 = love.audio.newSource("res/sound/ui-click-retro-game-click-01.wav", "static"),
 		ButtonClick2 = love.audio.newSource("res/sound/ui-click-retro-game-click-03.wav", "static"),
-		Switch = love.audio.newSource("res/sound/ui-switch-pull-switch-lamp-01.wav", "static")
+		Switch = love.audio.newSource("res/sound/ui-switch-pull-switch-lamp-01.wav", "static"),
+		Footsteps = love.audio.newSource("res/sound/footsteps.wav", "static")
 	}
+
+	self.SFX.Footsteps:setLooping(true)
 end
 
 

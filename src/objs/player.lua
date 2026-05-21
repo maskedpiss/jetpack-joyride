@@ -61,6 +61,10 @@ function Player:update(dt)
 	  end
 
 	  if self.isGrounded then
+		if not Globals.Sound.SFX.Footsteps:isPlaying() then
+			Globals.Sound:playSound(Globals.Sound.SFX.Footsteps)
+		end
+	  
 		timer = timer + dt
 
 		if timer >= frameDuration then
@@ -71,6 +75,10 @@ function Player:update(dt)
 			end
 		end
 	  else
+		if Globals.Sound.SFX.Footsteps:isPlaying() then
+			Globals.Sound.SFX.Footsteps:stop()
+		end
+	  
 	  	self.currentFrame = 31
 	  end
 
