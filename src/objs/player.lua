@@ -48,8 +48,16 @@ function Player:update(dt)
   if self.isAlive then
 	  if love.mouse.isDown(1) then
 	    self.yVel = self.yVel - self.thrust * dt
+
+	    if not Globals.Sound.SFX.Shooting:isPlaying() then
+			Globals.Sound:playSound(Globals.Sound.SFX.Shooting)
+	    end
 	  else
 	    self.yVel = self.yVel + self.gravity * dt
+
+	    if Globals.Sound.SFX.Shooting:isPlaying() then
+			Globals.Sound.SFX.Shooting:stop()
+	    end
 	  end
 	  
 	  self.yVel = math.max(-self.terminalVelocity, math.min(self.yVel, self.terminalVelocity))
@@ -90,6 +98,14 @@ function Player:update(dt)
 		end
 	  end
   else
+	if Globals.Sound.SFX.Footsteps:isPlaying() then
+		Globals.Sound.SFX.Footsteps:stop()
+	end
+
+	if Globals.Sound.SFX.Shooting:isPlaying() then
+		Globals.Sound.SFX.Shooting:stop()
+	end
+  
   	timer = timer + dt
 
   	local deathFrameDuration = 0.03
