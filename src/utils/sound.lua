@@ -7,7 +7,8 @@ function Sound:loadSFX()
 		ButtonClick2 = love.audio.newSource("res/sound/ui-click-retro-game-click-03.wav", "static"),
 		Switch = love.audio.newSource("res/sound/ui-switch-pull-switch-lamp-01.wav", "static"),
 		Footsteps = love.audio.newSource("res/sound/footsteps.wav", "static"),
-		Shooting = love.audio.newSource("res/sound/Shooting.wav", "static")
+		Shooting = love.audio.newSource("res/sound/Shooting.wav", "static"),
+		BulletImpact = love.audio.newSource("res/sound/hit-impact.ogg", "static")
 	}
 
 	self.SFX.Footsteps:setLooping(true)

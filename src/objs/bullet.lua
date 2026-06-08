@@ -66,6 +66,7 @@ function Bullet:triggerHit()
 	self.state = self.states.HIT
 	self.timer = 0
 	self.currentFrame = 1
+	Globals.Sound:playSound(Globals.Sound.SFX.BulletImpact)
   end
 end
 
