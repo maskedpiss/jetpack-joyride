@@ -131,6 +131,10 @@ end
 
 
 function Play.onExit()
+  if Globals.Sound.SFX.LaserHum:isPlaying() then
+	Globals.Sound.SFX.LaserHum:stop()
+  end
+
   Globals.Bullets = {}
   Globals.Rockets = {}
   player = nil

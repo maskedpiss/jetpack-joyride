@@ -177,6 +177,7 @@ function Zapper:update(dt)
   if self.hasHitPlayer and self.currentState == self.states.ON then
 	self.currentState = self.states.TRANSITION
 	self.animDirection = 1
+	Globals.Sound:playSound(Globals.Sound.SFX.LaserDisengage)
   end
 
   if self.isDestroyed then
@@ -213,6 +214,8 @@ function Zapper:update(dt)
   	self.isPoweredOn = true
   	self.animDirection = 1
 
+  	Globals.Sound:playSound(Globals.Sound.SFX.LaserHum)
+
   	self.timer = self.timer + dt
   	if self.timer >= self.frameDuration then
 		self.timer = 0
@@ -222,6 +225,10 @@ function Zapper:update(dt)
 			self.laserFrame = 1
 		end
   	end
+  else
+  	if Globals.Sound.SFX.LaserHum:isPlaying() then
+		Globals.Sound.SFX.LaserHum:stop()
+  	end
   end
 
   local fullWidth = (self.orientation == "horizontal") and (self.genSize * 2 + self.beamLength) or self.genSize
@@ -230,6 +237,7 @@ function Zapper:update(dt)
 	self.currentState = self.states.TRANSITION
 	self.animDirection = -1
 	self.laserFrame = 28
+	Globals.Sound:playSound(Globals.Sound.SFX.LaserEngage)
   end
   
   if self.x + fullWidth < 0 then
