@@ -225,10 +225,6 @@ function Zapper:update(dt)
 			self.laserFrame = 1
 		end
   	end
-  else
-  	if Globals.Sound.SFX.LaserHum:isPlaying() then
-		Globals.Sound.SFX.LaserHum:stop()
-  	end
   end
 
   local fullWidth = (self.orientation == "horizontal") and (self.genSize * 2 + self.beamLength) or self.genSize
