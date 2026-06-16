@@ -70,7 +70,13 @@ function Rocket:update(dt)
   		self.y = self.indicator.y
 		self.state = self.states.FLYING
 
-		--put launch sound trigger here
+		if Globals.Sound then
+			if Globals.Sound.SFX.RocketLock then Globals.Sound.SFX.RocketLock:stop() end
+			if Globals.Sound.SFX.RocketLaunch then
+				Globals.Sound.SFX.RocketLaunch:seek(0)
+				Globals.Sound:playSound(Globals.Sound.SFX.RocketLaunch)
+			end
+		end
   	end
 
   	animTimer = animTimer + dt
