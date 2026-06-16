@@ -96,7 +96,10 @@ function Rocket:update(dt)
 	if self.health <= 0 then
 		self.state = self.states.EXPLODING
 
-		--put kaboom sounds here
+		if Globals.Sound then
+			if Globals.Sound.SFX.RocketLaunch then Globals.Sound.SFX.RocketLaunch:stop() end
+			Globals.Sound:playSound(Globals.Sound.SFX.RocketExplode)
+		end
 	end
 
 	animTimer = animTimer + dt

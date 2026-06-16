@@ -105,6 +105,11 @@ function Play.update(dt)
       	if Play.Collisions:checkHitBox(player, r) and not player.isInvincible then
         		Globals.playerHealth = Globals.playerHealth - 1
         		r.state = r.states.EXPLODING
+
+        		if Globals.Sound then
+					if Globals.Sound.SFX.RocketLaunch then Globals.Sound.SFX.RocketLaunch:stop() end
+					Globals.Sound:playSound(Globals.Sound.SFX.RocketExplode)
+        		end
   
         		player.isInvincible = true
         		player.invincibleTimer = player.invincibleDuration
