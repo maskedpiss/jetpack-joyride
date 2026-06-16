@@ -1,6 +1,6 @@
 local Rocket = {}
 
-local timer = 0
+local animTimer = 0
 local frameDuration = 0.1
 
 function Rocket.new()
@@ -37,8 +37,12 @@ function Rocket:reset()
   	EXPLODING = "exploding"
   }
   self.state = self.states.HOMING
-
   self.homingTimer = 3
+
+  if Globals.Sound and Globals.Sound.SFX.RocketLock then
+	Globals.Sound.SFX.RocketLock:setLooping(true)
+	Globals.Sound:playSound(Globals.Sound.SFX.RocketLock)
+  end
 end
 
 
@@ -61,14 +65,17 @@ end
 function Rocket:update(dt)
   if self.state == self.states.HOMING then
   	self.homingTimer = self.homingTimer - dt
+  	
   	if self.homingTimer <= 0 then
   		self.y = self.indicator.y
 		self.state = self.states.FLYING
+
+		--put launch sound trigger here
   	end
 
-  	timer = timer + dt
-  	if timer >= frameDuration then
-		timer = 0
+  	animTimer = animTimer + dt
+  	if animTimer >= frameDuration then
+		animTimer = 0
 		self.currentIndFrame = self.currentIndFrame + 1
 
 		if self.currentIndFrame > #self.indicatorFrames then
@@ -82,11 +89,13 @@ function Rocket:update(dt)
 
 	if self.health <= 0 then
 		self.state = self.states.EXPLODING
+
+		--put kaboom sounds here
 	end
 
-	timer = timer + dt
-	if timer >= frameDuration then
-		timer = 0
+	animTimer = animTimer + dt
+	if animTimer >= frameDuration then
+		animTimer = 0
 		self.currentFrame = self.currentFrame + 1
 
 		if self.currentFrame > 10 then
@@ -95,9 +104,9 @@ function Rocket:update(dt)
 	end
   elseif self.state == self.states.EXPLODING then
   	local newFrameDuration = 0.015
-  	timer = timer + dt
-  	if timer >= newFrameDuration then
-		timer = 0
+  	animTimer = animTimer + dt
+  	if animTimer >= newFrameDuration then
+		animTimer = 0
 		self.explodeFrame = self.explodeFrame + 1
 
 		if self.explodeFrame > #self.rocketFrames then
