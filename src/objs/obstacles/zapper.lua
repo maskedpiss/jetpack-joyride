@@ -167,6 +167,11 @@ function Zapper:takeDamage(amount)
 		self.isDestroyed = true
 		self.hasHitPlayer = true
 		self.currentFrame = 3
+
+		if Globals.Sound and Globals.Sound.SFX.SmallExplosion then
+			Globals.Sound.SFX.SmallExplosion:seek(0)
+			Globals.Sound:playSound(Globals.Sound.SFX.SmallExplosion)
+		end
 	end
 end
 
