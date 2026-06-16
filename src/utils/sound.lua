@@ -13,7 +13,8 @@ function Sound:loadSFX()
 		LaserDisengage = love.audio.newSource("res/sound/laser-disengage.wav", "static"),
 		LaserHum = love.audio.newSource("res/sound/laser-hum.wav", "static"),
 		RocketLock = love.audio.newSource("res/sound/missile-lockon.mp3", "static"),
-		RocketLaunch = love.audio.newSource("res/sound/missile-firing.wav", "static")
+		RocketLaunch = love.audio.newSource("res/sound/missile-firing.wav", "static"),
+		RocketExplode = love.audio.newSource("res/sound/missile-explode.wav", "static")
 	}
 
 	self.SFX.Footsteps:setLooping(true)
