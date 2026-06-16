@@ -15,7 +15,8 @@ function Sound:loadSFX()
 		RocketLock = love.audio.newSource("res/sound/missile-lockon.mp3", "static"),
 		RocketLaunch = love.audio.newSource("res/sound/missile-firing.wav", "static"),
 		RocketExplode = love.audio.newSource("res/sound/missile-explode.wav", "static"),
-		SmallExplosion = love.audio.newSource("res/sound/small-explosion.mp3", "static")
+		SmallExplosion = love.audio.newSource("res/sound/small-explosion.mp3", "static"),
+		DeathSound = love.audio.newSource("res/sound/male-death-cry.wav", "static")
 	}
 
 	self.SFX.Footsteps:setLooping(true)
